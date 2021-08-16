@@ -1,8 +1,8 @@
 document.getElementById("showData").onclick = TableFromJson;
 
 function TableFromJson() {
-  fetch('http://localhost:5000/movies')
-  .then((resp) => resp.json())
+  axios.get('http://localhost:5000/movies')
+  .then(response => response.data)
   .then((data) => {
 
   let col = [];
