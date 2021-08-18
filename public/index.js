@@ -1,27 +1,71 @@
-document.getElementById("addData").onclick = initializeTable;
+const APP = {
+  SW:null,
+  cacheName: 'assetCache1',
+  init() {
 
-function initializeTable() {
-  axios.get('http://localhost:5000/movies')
-  .then(response => response.data)
-  .then((data) => {
-    data.map((el) => createTable(el))
-})}
+    APP.registerSW();
 
-function createTable(data) {
-  let table = document.getElementById('table')
-  let row = document.createElement('tr');
-  let span = document.createElement("span");
+    document
+      .querySelector('div>h3')
+      .addEventListener('click', APP.deleteCache);
 
-  for(let key in data) {
-    let col = document.createElement("td");
+    document.getElementById("addData").onclick = initializeTable;
 
-    col.innerHTML = data[key];
-    row.classList.add('tooltip');
+    function initializeTable() {
+      axios.get('http://localhost:5000/movies')
+      .then(response => response.data)
+      .then((data) => {
+        data.map((el) => createTable(el))
+    })}
 
-    table.appendChild(row);
-    row.appendChild(col);
+    function createTable(data) {
+      let table = document.getElementById('table')
+      let row = document.createElement('tr');
+      let span = document.createElement("span");
+
+      for(let key in data) {
+        let col = document.createElement("td");
+
+        col.innerHTML = data[key];
+        row.classList.add('tooltip');
+
+        table.appendChild(row);
+        row.appendChild(col);
+      }
+      span.innerHTML = data.title;
+      span.classList.add('tooltip-text');
+      row.appendChild(span);
+    }
+  },
+  registerSW() {
+    if('serviceWorker' in navigator) {
+      navigator.serviceWorker
+      .register('/serviceWorker.js', {
+        scope: '/',
+      })
+      .then(registration => {
+        APP.SW = registration.installing || 
+          registration.waiting || 
+          registration.active;
+          console.log('service worker registered');
+      })
+      if(navigator.serviceWorker.controller) {
+        console.log('We have a service worker installed');
+      }
+
+      navigator.serviceWorker.oncontrollerchange = (ev) => {
+        console.log('New service worker activated');
+      }
+
+      // navigator.serviceWorker.getRegistrations().then(regs => {
+      //   for(let reg of regs) {
+      //     reg.unregister().then(isUnreg => console.log(isUnreg));
+      //   }
+      // })
+    } else {
+      console.log('Service workers are not supported');
+    }
   }
-  span.innerHTML = data.title;
-  span.classList.add('tooltip-text');
-  row.appendChild(span);
 }
+
+document.addEventListener('DOMContentLoaded', APP.init);
