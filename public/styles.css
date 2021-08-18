@@ -39,7 +39,6 @@ table {
 
 table th,
 table td {
-  visibility: visible;
   padding: 15px;
   text-align: left;
 } 
