@@ -31,7 +31,11 @@ function TableFromJson() {
     }
   }
 
+  
   const divShowData = document.getElementById('addTable');
+  divShowData.style.visibility = "visible";
   divShowData.innerHTML = '';
   divShowData.appendChild(table);
+  const showDataButton = document.getElementById('showData');
+  showDataButton.disabled = true;
 })}
