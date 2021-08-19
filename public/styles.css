@@ -52,13 +52,15 @@ table tr:hover {
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
-.tooltip {
+.tooltip,
+.static-tooltip {
   position: relative;
   cursor: pointer;
   border-bottom: 1px black;
 }
 
-.tooltip .tooltip-text {
+.static-tooltip .tooltip-text,
+.tooltip .tooltip-text  {
   visibility: hidden;
   width: 120px;
   top: 100%;
@@ -75,11 +77,17 @@ table tr:hover {
   z-index: 1;
 }
 
-.tooltip:hover:first-child .tooltip-text {
+.tooltip:first-child:hover .tooltip-text {
+  padding: 15px;
+  visibility: visible;
+}
+.static-tooltip:hover .tooltip-text {
+  padding: 15px;
   visibility: visible;
 }
 
-.tooltip .tooltip-text::after {
+.tooltip .tooltip-text::after,
+.static-tooltip .tooltip-text::after  {
   content: " ";
   position: absolute;
   bottom: 100%;
