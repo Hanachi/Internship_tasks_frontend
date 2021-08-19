@@ -3,7 +3,7 @@ const APP = {
   cacheName: 'assetCache1',
   init() {
 
-    APP.registerSW();
+    // APP.registerSW();
 
     document
       .querySelector('div>h3')
@@ -21,20 +21,25 @@ const APP = {
     function createTable(data) {
       let table = document.getElementById('table')
       let row = document.createElement('tr');
-      let span = document.createElement("span");
+      
 
       for(let key in data) {
         let col = document.createElement("td");
+        let span = document.createElement("span");
 
         col.innerHTML = data[key];
-        row.classList.add('tooltip');
+        col.classList.add('tooltip');
 
+        span.innerHTML = data.title;
+        span.classList.add('tooltip-text');
+
+        col.appendChild(span);
         table.appendChild(row);
         row.appendChild(col);
+        
       }
-      span.innerHTML = data.title;
-      span.classList.add('tooltip-text');
-      row.appendChild(span);
+
+
     }
   },
   registerSW() {
