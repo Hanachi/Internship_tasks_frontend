@@ -1,25 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
-    <title>Internship task 1</title>
-  </head>
-  <body>
-    <div class="info">
-      <h3>
-        Click the button to create table.
-      </h3>
-      <input 
-        id='showData'
-        type='button'
-        value='Create Table from JSON data'
-      />
-      <div id='addTable' class="container"></div>
-    </div>
-  </body>
-  <script type="text/javascript" src="index.js">
-  </script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="styles.css" />
+		<title>Internship task 1</title>
+	</head>
+	<body>
+		<div class="data">
+			<h3>
+				Click the button to create table
+			</h3>
+			<input 
+				id='addData'
+				type='button'
+				value='Create Table from JSON data'
+			/>
+			<div class="tooltip">
+				<h4 class="tooltip-title">Tooltip</h4>
+				<span class="tooltip-text">
+					<p>1.Press button to create movies table</p>
+					<p>2.There are american movies from 1999 to 2018</p>
+					<p>3.Table is responsive</p>
+				</span>
+			</div>		
+			<div id='addTable' class="table-container">
+				<table id='table'>
+					<tr>
+						<th>Title</th>
+						<th>Year</th>
+						<th>Cast</th>
+						<th>Genres</th>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="index.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </html>
