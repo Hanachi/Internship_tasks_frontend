@@ -3,7 +3,7 @@ const APP = {
   cacheName: 'assetCache1',
   init() {
 
-    // APP.registerSW();
+    APP.registerSW();
 
     document
       .querySelector('div>h3')
