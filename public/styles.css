@@ -52,14 +52,15 @@ table tr:hover {
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
-.tooltip {
+.tooltip,
+.static-tooltip {
   position: relative;
   cursor: pointer;
-  display: inline-block;
-  border-bottom: 1px dotted black;
+  border-bottom: 1px black;
 }
 
-.tooltip .tooltip-text {
+.static-tooltip .tooltip-text,
+.tooltip .tooltip-text  {
   visibility: hidden;
   width: 120px;
   top: 100%;
@@ -76,12 +77,17 @@ table tr:hover {
   z-index: 1;
 }
 
-.tooltip:hover .tooltip-text {
+.tooltip:first-child:hover .tooltip-text {
+  padding: 15px;
+  visibility: visible;
+}
+.static-tooltip:hover .tooltip-text {
   padding: 15px;
   visibility: visible;
 }
 
-.tooltip .tooltip-text::after {
+.tooltip .tooltip-text::after,
+.static-tooltip .tooltip-text::after  {
   content: " ";
   position: absolute;
   bottom: 100%;
@@ -99,6 +105,9 @@ table tr:hover {
     box-shadow: 0 5px 10px rgba(12, 16, 31, 0.4);
     overflow-x: auto;
     width: 100%;
+  }
+  .tooltip-text {
+    padding: 5px;
   }
   table {
     color: #e2e2e2;
