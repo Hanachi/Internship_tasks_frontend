@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { DataGrid } from '@material-ui/data-grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,7 +15,9 @@ const useStyles = makeStyles({
 });
 
 const Table = () => {
+
 	const classes = useStyles();
+	const history = useHistory();
 	const [movies, setMovies] = useState([]);
 	const rows = movies.map((movie) => movie);
 	const columns = [
@@ -29,6 +32,11 @@ const Table = () => {
 			flex: 1
 		},
 		{
+			field: 'year',
+			headerName: 'Year',
+			width: 110
+		},
+		{
 			field: 'cast',
 			headerName: 'Cast',
 			flex: 1
@@ -39,13 +47,15 @@ const Table = () => {
 			flex: 1
 		},
 	];
-
+	const openMovie = (id) => {
+		history.push(`/movies/${id}`);
+	}
 	useEffect(() => {
 		fetchMovies()
-		.then(res => {
-			setMovies(res.data);
-		})
-	}, [])
+			.then(res => {
+				setMovies(res.data);
+			})
+	}, [movies.length])
 
 	return (
 		<div style={{ height: 400, width: '100%' }}>
@@ -56,8 +66,10 @@ const Table = () => {
 				pageSize={5}
 				disableSelectionOnClick
 				hideFooterSelectedRowCount
-				onRowClick={() => console.log('open row page')}
+				onRowClick={(e) => openMovie(e.id)}
 			/>
+			
+
 		</div>
 	);
 }
