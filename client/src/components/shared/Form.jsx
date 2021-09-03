@@ -69,15 +69,16 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 					<>
 						<Grid item xs={3}>
 							<Button
+								type='submit'
 								variant='contained'
 								color='primary'
-								onClick={() => update(id, movie)}
 							>
 								Update
 							</Button>
 						</Grid>
 						<Grid item xs={3}>
 							<Button
+								type='submit'
 								variant='contained'
 								color='secondary'
 								onClick={() => remove(id)}
