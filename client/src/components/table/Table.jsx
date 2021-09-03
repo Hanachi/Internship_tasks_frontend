@@ -69,7 +69,7 @@ const Table = () => {
 				pageSize={5}
 				disableSelectionOnClick
 				hideFooterSelectedRowCount
-				onRowClick={(e) => openMovie(e.id)}
+				onRowDoubleClick={(e) => openMovie(e.id)}
 			/>
 		</div>
 	);
