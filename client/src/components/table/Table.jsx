@@ -11,6 +11,9 @@ const useStyles = makeStyles({
 		'&.MuiDataGrid-root .MuiDataGrid-cell:focus': {
 			outline: 'none',
 		},
+		'&.MuiDataGrid-root .MuiDataGrid-row:hover': {
+			cursor: 'pointer'
+		},
 	}
 });
 
@@ -68,8 +71,6 @@ const Table = () => {
 				hideFooterSelectedRowCount
 				onRowClick={(e) => openMovie(e.id)}
 			/>
-			
-
 		</div>
 	);
 }

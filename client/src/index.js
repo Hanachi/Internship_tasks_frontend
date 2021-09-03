@@ -19,7 +19,10 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
-        <Route path='/' exact component={App, Table} />
+        <Route exact path='/'>
+          <App/>
+          <Table/>
+        </Route>
         <Route path='/movies/:id' exact component={Movie} />
         <Route path='/movie/create' exact component={CreateMovie} />
       </Switch>
