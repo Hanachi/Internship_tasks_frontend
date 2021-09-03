@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { createMovie } from '../../api';
-import { Button, Paper, TextField, Typography } from '@material-ui/core';
 import Form from '../shared/Form';
 
 

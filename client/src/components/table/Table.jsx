@@ -61,12 +61,12 @@ const Table = () => {
 	}, [movies.length])
 
 	return (
-		<div style={{ height: 400, width: '100%' }}>
+		<div style={{ height: 700, width: '100%' }}>
 			<DataGrid
 				className={classes.root}
 				rows={rows}
 				columns={columns}
-				pageSize={5}
+				pageSize={10}
 				disableSelectionOnClick
 				hideFooterSelectedRowCount
 				onRowDoubleClick={(e) => openMovie(e.id)}
