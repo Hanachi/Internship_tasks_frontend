@@ -9,6 +9,7 @@ const Movie = (props) => {
 		getMovieById(id)
 			.then(res => {
 				setMovie(res.data);
+				console.log(res)
 			})
 	}, [])
 	const [movie, setMovie] = useState({});

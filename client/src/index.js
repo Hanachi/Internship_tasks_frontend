@@ -11,9 +11,9 @@ import './index.css';
 import App from './App';
 
 import reportWebVitals from './reportWebVitals';
-import Table from './components/table/Table';
 import Movie from './components/movie/Movie';
 import CreateMovie from './components/movie/CreateMovie';
+import MoviesTable from './components/table/Table';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -21,7 +21,7 @@ ReactDOM.render(
       <Switch>
         <Route exact path='/'>
           <App/>
-          <Table/>
+          <MoviesTable/>
         </Route>
         <Route path='/movies/:id' exact component={Movie} />
         <Route path='/movie/create' exact component={CreateMovie} />
