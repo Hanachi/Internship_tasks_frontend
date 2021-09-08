@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import TablePagination from '@material-ui/core/TablePagination';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
@@ -34,14 +34,21 @@ const useStyles = makeStyles({
 		marginRight: '20px'
 	}
 });
+
+function useQuery() {
+	return new URLSearchParams(useLocation());
+}
 const MoviesTable = () => {
 
-
-	const classes = useStyles();
+	const query = useQuery();
+	const qPage = query.get('page') || 1;
+	const qSearch = query.get('query');
 	const history = useHistory();
+	const classes = useStyles();
 	const [movies, setMovies] = useState([]);
 	const [rowsPerPage, setPer] = useState(5);
 	const [page, setPage] = useState(0);
+	const [search, setSearch] = useState();
 	const totalItems = movies.length;
 	const columns = [
 		{
@@ -69,24 +76,46 @@ const MoviesTable = () => {
 			headerName: 'imdbRating',
 		}
 	];
+	useEffect(() => {
+		fetchMovies(search || '')
+			.then(res => {
+				setMovies(res.data);
+				console.log(res)
+			})
+	}, [])
+
 	const openMovie = (id) => {
 		console.log()
 		history.push(`/movies/${id}`);
 	}
-	useEffect(() => {
-		fetchMovies()
+
+	const searchData = () => {
+		if(search?.trim()) {
+			fetchMovies(search)
 			.then(res => {
 				setMovies(res.data);
 			})
-	}, [movies.length])
+			history.push(`/movies?query=${search}`)
+		} else {
+			history.push('/')
+		}
+	}
 
 	return (
 		<div>
 			<div className={classes.search}>
-				<TextField className={classes.searchField}/>
+				<TextField
+					name='search'
+					className={classes.searchField}
+					label='Search'
+					value={search}
+					onChange={(e) => setSearch(e.target.value)}
+					required
+				/>
 				<Button
 					variant='contained'
 					color='secondary'
+					onClick={searchData}
 				>
 					Search
 				</Button>
@@ -118,8 +147,8 @@ const MoviesTable = () => {
             </TableCell>
             <TableCell >{row.title}</TableCell>
             <TableCell>{row.year}</TableCell>
-            <TableCell>{row.genres}</TableCell>
-            <TableCell>{row.actors}</TableCell>
+            <TableCell>{row.genres.join(',')}</TableCell>
+            <TableCell>{row.actors.join(',')}</TableCell>
 						<TableCell>{row.imdbRating || '-'}</TableCell>
           </TableRow>
         ))}
