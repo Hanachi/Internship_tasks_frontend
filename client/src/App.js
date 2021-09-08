@@ -10,7 +10,7 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <h2>Movies</h2>
-        <Link to='/movie/create' style={{ textDecoration: 'none' }}>
+        <Link to='/movies/create' style={{ textDecoration: 'none' }}>
           <Button
             className='create-btn'
             variant='contained'

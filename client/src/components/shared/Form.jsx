@@ -4,7 +4,7 @@ import { Button, TextField, Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
 const Form = ({id, movie, setMovie, create, update, remove}) => {
-	const isCreate = id ? `Movie #${id}` : 'Create movie'
+	const isCreate = id ? 'Edit or delete movie' : 'Create movie'
 
 	return(
 		<form onSubmit={() => id ? update(id, movie) : create(movie)}>

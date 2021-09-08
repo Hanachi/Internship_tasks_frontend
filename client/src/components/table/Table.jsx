@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import TablePagination from '@material-ui/core/TablePagination';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import MaterialTable from '@material-ui/core/Table';
@@ -9,9 +10,11 @@ import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
+
 import { makeStyles } from '@material-ui/core/styles';
 
 import { fetchMovies } from '../../api';
+import { Button, TextField } from '@material-ui/core';
 
 const useStyles = makeStyles({
 	root: {
@@ -21,6 +24,14 @@ const useStyles = makeStyles({
 		'&.MuiTableBody-root .MuiTableRow-root:hover': {
 			cursor: 'pointer'
 		},
+	},
+	search: {
+		display: 'flex',
+		justifyContent: 'flex-end',
+		margin: '20px'
+	},
+	searchField: {
+		marginRight: '20px'
 	}
 });
 const MoviesTable = () => {
@@ -70,7 +81,16 @@ const MoviesTable = () => {
 	}, [movies.length])
 
 	return (
-		<div className=''>
+		<div>
+			<div className={classes.search}>
+				<TextField className={classes.searchField}/>
+				<Button
+					variant='contained'
+					color='secondary'
+				>
+					Search
+				</Button>
+			</div>
     <TableContainer component={Paper}>
       <MaterialTable className={''} size="medium" aria-label="a dense table">
       <TableHead>
@@ -78,17 +98,23 @@ const MoviesTable = () => {
 							{columns.map((column) => (
 								<TableCell
 									key={column.field}
-								>
+								> 
+									<TableSortLabel
+										// active={orderBy === headCell.id}
+										// direction={orderBy === headCell.id ? order : 'asc'}
+										// onClick={createSortHandler(headCell.id)}
+            			>
 									{column.headerName}
+									</TableSortLabel>
 								</TableCell>
 							))}
         </TableRow>
       </TableHead>
       <TableBody>
         {movies.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-					<TableRow key={row.id} className={classes.tableR} onClick={() => openMovie(row._id)}>
+					<TableRow key={row._id} className={classes.tableR} onClick={() => openMovie(row._id)}>
             <TableCell component="th" scope="row">
-              {row.id}
+              {row._id}
             </TableCell>
             <TableCell >{row.title}</TableCell>
             <TableCell>{row.year}</TableCell>
