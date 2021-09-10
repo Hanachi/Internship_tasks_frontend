@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
+import queryString from 'query-string';
+
 import TablePagination from '@material-ui/core/TablePagination';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableCell from '@material-ui/core/TableCell'
@@ -34,21 +36,18 @@ const useStyles = makeStyles({
 		marginRight: '20px'
 	}
 });
-function useQuery() {
-	return new URLSearchParams(useLocation().search);
-}
 
 const MoviesTable = () => {
-
+	const { search: locationSearch } = useLocation();
 	const history = useHistory();
-	const location = useLocation();
 	const classes = useStyles();
 	const [movies, setMovies] = useState([]);
 	const [moviesCount, setCount] = useState(movies.length);
+	const params = queryString.parse(locationSearch);
 	const [query, setQuery] = useState({
-		search: '',
-		page : 0,
-		rowsPerPage: 5,
+		search: params.search || '',
+		page : Number(params.page) || 0,
+		rowsPerPage: Number(params.rowsPerPage) || 5,
 	});
 	const { page, rowsPerPage, search } = query;
 	const columns = [
@@ -78,36 +77,34 @@ const MoviesTable = () => {
 		}
 	];
 	useEffect(() => {
-		fetchMovies(query)
+		fetchMovies({ ...query })
 		.then(res => {
 			setMovies(res.data.data);
 			setCount(res.data.count);
-			history.push(`/movies?` + new URLSearchParams({ ...query }))
-			})
-	}, [page, rowsPerPage])
-
+			updateHistory();
+		})
+	}, [page, rowsPerPage, locationSearch])
+	
 	const openMovie = (id) => {
 		history.push(`/movies/${id}`);
 	}
-
-
+	
 	const searchOnKeyPressed = (event) => {
 		if (event.key === 'Enter') {
 			searchData();
 		}
 	}
 	const searchData = () => {
-		if(search?.trim()) {
-			fetchMovies(query)
-			.then(res => {
-				setMovies(res.data.data);
-				setQuery({...query, page: 0 });
-				setCount(res.data.count);		
-				history.push(`/movies?` + new URLSearchParams({ ...query }));
-			})
-		} else {
-			history.push('/');
-		}
+		setQuery({...query, page: 0 });
+		updateHistory();
+	}
+
+	const updateHistory = () => {
+		history.push(`/movies?` + new URLSearchParams({ ...query }));
+	}
+	const pageClick = (page) => {
+		setQuery({ ...query, page });
+		updateHistory();
 	}
 	return (
 		<div>
@@ -172,11 +169,11 @@ const MoviesTable = () => {
 				onPageChange={() => {}}
 				backIconButtonProps={{
 					'aria-label': 'Previous Page',
-					'onClick': () => setQuery({ ...query, page: page - 1 }),
+					'onClick': () => pageClick(Number(page) - 1),
 				}}
 				nextIconButtonProps={{
 					'aria-label': 'Next Page',
-					'onClick': () => setQuery({ ...query, page: page + 1 }),
+					'onClick': () => pageClick(Number(page) + 1),
 				}}
 				onRowsPerPageChange={(e) => setQuery({ ...query, rowsPerPage: e.target.value })}
 			/>
