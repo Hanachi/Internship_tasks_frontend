@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
+import queryString from 'query-string';
+
 import TablePagination from '@material-ui/core/TablePagination';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableCell from '@material-ui/core/TableCell'
@@ -35,21 +37,19 @@ const useStyles = makeStyles({
 	}
 });
 
-function useQuery() {
-	return new URLSearchParams(useLocation());
-}
 const MoviesTable = () => {
-
-	const query = useQuery();
-	const qPage = query.get('page') || 1;
-	const qSearch = query.get('query');
+	const { search: locationSearch } = useLocation();
 	const history = useHistory();
 	const classes = useStyles();
 	const [movies, setMovies] = useState([]);
-	const [rowsPerPage, setPer] = useState(5);
-	const [page, setPage] = useState(0);
-	const [search, setSearch] = useState();
-	const totalItems = movies.length;
+	const [moviesCount, setCount] = useState(movies.length);
+	const params = queryString.parse(locationSearch);
+	const [query, setQuery] = useState({
+		search: params.search || '',
+		page : Number(params.page) || 0,
+		rowsPerPage: Number(params.rowsPerPage) || 5,
+	});
+	const { page, rowsPerPage, search } = query;
 	const columns = [
 		{
 			field: 'id',
@@ -77,30 +77,35 @@ const MoviesTable = () => {
 		}
 	];
 	useEffect(() => {
-		fetchMovies(search || '')
-			.then(res => {
-				setMovies(res.data);
-				console.log(res)
-			})
-	}, [])
-
+		fetchMovies({ ...query })
+		.then(res => {
+			setMovies(res.data.data);
+			setCount(res.data.count);
+			updateHistory();
+		})
+	}, [page, rowsPerPage, locationSearch])
+	
 	const openMovie = (id) => {
-		console.log()
 		history.push(`/movies/${id}`);
 	}
-
-	const searchData = () => {
-		if(search?.trim()) {
-			fetchMovies(search)
-			.then(res => {
-				setMovies(res.data);
-			})
-			history.push(`/movies?query=${search}`)
-		} else {
-			history.push('/')
+	
+	const searchOnKeyPressed = (event) => {
+		if (event.key === 'Enter') {
+			searchData();
 		}
 	}
+	const searchData = () => {
+		setQuery({...query, page: 0 });
+		updateHistory();
+	}
 
+	const updateHistory = () => {
+		history.push(`/movies?` + new URLSearchParams({ ...query }));
+	}
+	const pageClick = (page) => {
+		setQuery({ ...query, page });
+		updateHistory();
+	}
 	return (
 		<div>
 			<div className={classes.search}>
@@ -109,8 +114,8 @@ const MoviesTable = () => {
 					className={classes.searchField}
 					label='Search'
 					value={search}
-					onChange={(e) => setSearch(e.target.value)}
-					required
+					onKeyPress={searchOnKeyPressed}
+					onChange={(e) => setQuery({ ...query, search: e.target.value})}
 				/>
 				<Button
 					variant='contained'
@@ -140,7 +145,7 @@ const MoviesTable = () => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {movies.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+        {movies?.map((row) => (
 					<TableRow key={row._id} className={classes.tableR} onClick={() => openMovie(row._id)}>
             <TableCell component="th" scope="row">
               {row._id}
@@ -158,18 +163,19 @@ const MoviesTable = () => {
 			<TablePagination
 				rowsPerPageOptions={[5, 10, 25]}
 				component='div'
-				count={totalItems}
+				count={moviesCount}
 				rowsPerPage={rowsPerPage}
 				page={page}
+				onPageChange={() => {}}
 				backIconButtonProps={{
 					'aria-label': 'Previous Page',
-					'onClick': () => setPage(page - 1),
+					'onClick': () => pageClick(Number(page) - 1),
 				}}
 				nextIconButtonProps={{
 					'aria-label': 'Next Page',
-					'onClick': () => setPage(page + 1),
+					'onClick': () => pageClick(Number(page) + 1),
 				}}
-				onRowsPerPageChange={(event) => setPer(event.target.value)}
+				onRowsPerPageChange={(e) => setQuery({ ...query, rowsPerPage: e.target.value })}
 			/>
     </div>
 	);
