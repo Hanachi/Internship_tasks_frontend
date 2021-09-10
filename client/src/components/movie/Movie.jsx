@@ -9,6 +9,7 @@ const Movie = (props) => {
 		getMovieById(id)
 			.then(res => {
 				setMovie(res.data);
+				console.log(res)
 			})
 	}, [])
 	const [movie, setMovie] = useState({});
@@ -17,11 +18,11 @@ const Movie = (props) => {
 
 	const update = (id, movie) => {
 		updateMovie(id, movie);
-		history.push('/');
+		history.push('/movies');
 	}
 	const remove = (id) => {
 		deleteMovie(id);
-		history.push('/');
+		history.push('/movies');
 	}
 	return (
 			<Form

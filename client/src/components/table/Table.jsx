@@ -1,78 +1,184 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
-import { DataGrid } from '@material-ui/data-grid';
+import queryString from 'query-string';
+
+import TablePagination from '@material-ui/core/TablePagination';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import TableCell from '@material-ui/core/TableCell'
+import TableRow from '@material-ui/core/TableRow'
+import MaterialTable from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import Paper from '@material-ui/core/Paper';
+
 import { makeStyles } from '@material-ui/core/styles';
 
 import { fetchMovies } from '../../api';
+import { Button, TextField } from '@material-ui/core';
 
 const useStyles = makeStyles({
 	root: {
 		'&.MuiDataGrid-root .MuiDataGrid-cell:focus': {
 			outline: 'none',
 		},
-		'&.MuiDataGrid-root .MuiDataGrid-row:hover': {
+		'&.MuiTableBody-root .MuiTableRow-root:hover': {
 			cursor: 'pointer'
 		},
+	},
+	search: {
+		display: 'flex',
+		justifyContent: 'flex-end',
+		margin: '20px'
+	},
+	searchField: {
+		marginRight: '20px'
 	}
 });
 
-const Table = () => {
-
-	const classes = useStyles();
+const MoviesTable = () => {
+	const { search: locationSearch } = useLocation();
 	const history = useHistory();
+	const classes = useStyles();
 	const [movies, setMovies] = useState([]);
-	const rows = movies.map((movie) => movie);
+	const [moviesCount, setCount] = useState(movies.length);
+	const params = queryString.parse(locationSearch);
+	const [query, setQuery] = useState({
+		search: params.search || '',
+		page : Number(params.page) || 0,
+		rowsPerPage: Number(params.rowsPerPage) || 5,
+	});
+	const { page, rowsPerPage, search } = query;
 	const columns = [
 		{
 			field: 'id',
 			headerName: 'ID',
-			width: 150,
 		},
 		{
 			field: 'title',
 			headerName: 'Title',
-			flex: 1
 		},
 		{
 			field: 'year',
 			headerName: 'Year',
-			width: 110
-		},
-		{
-			field: 'cast',
-			headerName: 'Cast',
-			flex: 1
 		},
 		{
 			field: 'genres',
 			headerName: 'Genres',
-			flex: 1
 		},
+		{
+			field: 'actors',
+			headerName: 'Actors',
+		},
+		{
+			field: 'imdbRating',
+			headerName: 'imdbRating',
+		}
 	];
+	useEffect(() => {
+		fetchMovies({ ...query })
+		.then(res => {
+			setMovies(res.data.data);
+			setCount(res.data.count);
+			updateHistory();
+		})
+	}, [page, rowsPerPage, locationSearch])
+	
 	const openMovie = (id) => {
 		history.push(`/movies/${id}`);
 	}
-	useEffect(() => {
-		fetchMovies()
-			.then(res => {
-				setMovies(res.data);
-			})
-	}, [movies.length])
+	
+	const searchOnKeyPressed = (event) => {
+		if (event.key === 'Enter') {
+			searchData();
+		}
+	}
+	const searchData = () => {
+		setQuery({...query, page: 0 });
+		updateHistory();
+	}
 
+	const updateHistory = () => {
+		history.push(`/movies?` + new URLSearchParams({ ...query }));
+	}
+	const pageClick = (page) => {
+		setQuery({ ...query, page });
+		updateHistory();
+	}
 	return (
-		<div style={{ height: 700, width: '100%' }}>
-			<DataGrid
-				className={classes.root}
-				rows={rows}
-				columns={columns}
-				pageSize={10}
-				disableSelectionOnClick
-				hideFooterSelectedRowCount
-				onRowDoubleClick={(e) => openMovie(e.id)}
+		<div>
+			<div className={classes.search}>
+				<TextField
+					name='search'
+					className={classes.searchField}
+					label='Search'
+					value={search}
+					onKeyPress={searchOnKeyPressed}
+					onChange={(e) => setQuery({ ...query, search: e.target.value})}
+				/>
+				<Button
+					variant='contained'
+					color='secondary'
+					onClick={searchData}
+				>
+					Search
+				</Button>
+			</div>
+    <TableContainer component={Paper}>
+      <MaterialTable className={''} size="medium" aria-label="a dense table">
+      <TableHead>
+        <TableRow key={''}>
+							{columns.map((column) => (
+								<TableCell
+									key={column.field}
+								> 
+									<TableSortLabel
+										// active={orderBy === headCell.id}
+										// direction={orderBy === headCell.id ? order : 'asc'}
+										// onClick={createSortHandler(headCell.id)}
+            			>
+									{column.headerName}
+									</TableSortLabel>
+								</TableCell>
+							))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {movies?.map((row) => (
+					<TableRow key={row._id} className={classes.tableR} onClick={() => openMovie(row._id)}>
+            <TableCell component="th" scope="row">
+              {row._id}
+            </TableCell>
+            <TableCell >{row.title}</TableCell>
+            <TableCell>{row.year}</TableCell>
+            <TableCell>{row.genres.join(',')}</TableCell>
+            <TableCell>{row.actors.join(',')}</TableCell>
+						<TableCell>{row.imdbRating || '-'}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+      </MaterialTable>
+    </TableContainer>
+			<TablePagination
+				rowsPerPageOptions={[5, 10, 25]}
+				component='div'
+				count={moviesCount}
+				rowsPerPage={rowsPerPage}
+				page={page}
+				onPageChange={() => {}}
+				backIconButtonProps={{
+					'aria-label': 'Previous Page',
+					'onClick': () => pageClick(Number(page) - 1),
+				}}
+				nextIconButtonProps={{
+					'aria-label': 'Next Page',
+					'onClick': () => pageClick(Number(page) + 1),
+				}}
+				onRowsPerPageChange={(e) => setQuery({ ...query, rowsPerPage: e.target.value })}
 			/>
-		</div>
+    </div>
 	);
 }
 
-export default Table;
+export default MoviesTable;

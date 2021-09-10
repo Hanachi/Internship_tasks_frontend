@@ -4,7 +4,7 @@ import { Button, TextField, Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
 const Form = ({id, movie, setMovie, create, update, remove}) => {
-	const isCreate = id ? `Movie #${id}` : 'Create movie'
+	const isCreate = id ? 'Edit or delete movie' : 'Create movie'
 
 	return(
 		<form onSubmit={() => id ? update(id, movie) : create(movie)}>
@@ -38,10 +38,10 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 				</Grid>
 				<Grid item xs={3}>
 					<TextField
-						value={movie.cast || ''}
-						label='Cast'
+						value={movie.actors || ''}
+						label='Actors'
 						variant='outlined'
-						onChange={(event) => setMovie({ ...movie, cast: event.target.value })}
+						onChange={(event) => setMovie({ ...movie, actors: event.target.value.split(',') })}
 						required
 					/>
 				</Grid>
@@ -51,7 +51,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 						label='Genres'
 						variant='outlined'
 						placeholder='genres'
-						onChange={(event) => setMovie({ ...movie, genres: event.target.value })}
+						onChange={(event) => setMovie({ ...movie, genres: event.target.value.split(',') })}
 						required
 					/>
 				</Grid>

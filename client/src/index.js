@@ -4,6 +4,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
+  BrowserRouter
 } from "react-router-dom";
 
 
@@ -11,22 +13,23 @@ import './index.css';
 import App from './App';
 
 import reportWebVitals from './reportWebVitals';
-import Table from './components/table/Table';
 import Movie from './components/movie/Movie';
 import CreateMovie from './components/movie/CreateMovie';
+import MoviesTable from './components/table/Table';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
+    <BrowserRouter>
       <Switch>
-        <Route exact path='/'>
+        <Route path='/' exact component={() => <Redirect to='/movies' />} />
+        <Route exact path='/movies'>
           <App/>
-          <Table/>
+          <MoviesTable/>
         </Route>
-        <Route path='/movies/:id' exact component={Movie} />
-        <Route path='/movie/create' exact component={CreateMovie} />
+        <Route path='/movies/create' component={CreateMovie} />
+        <Route path='/movies/:id' component={Movie} />
       </Switch>
-    </Router>
+    </BrowserRouter >
   </React.StrictMode>,
   document.getElementById('root')
 );
