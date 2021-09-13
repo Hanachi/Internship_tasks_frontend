@@ -16,6 +16,7 @@ import reportWebVitals from './reportWebVitals';
 import Movie from './components/movie/Movie';
 import CreateMovie from './components/movie/CreateMovie';
 import MoviesTable from './components/table/Table';
+import Statistic from './components/statistic/Statistic';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -27,7 +28,8 @@ ReactDOM.render(
           <MoviesTable/>
         </Route>
         <Route path='/movies/create' component={CreateMovie} />
-        <Route path='/movies/:id' component={Movie} />
+        <Route path='/movies/statistic' component={Statistic} />
+        <Route path='/movies/:id/' component={Movie} />
       </Switch>
     </BrowserRouter >
   </React.StrictMode>,

@@ -19,6 +19,15 @@ const App = () => {
             Create movie
           </Button>
         </Link>
+        <Link to='/movies/statistic' style={{ textDecoration: 'none' }}>
+          <Button
+            className='statistic-btn'
+            variant='contained'
+            color='secondary'
+          >
+            Statistic
+          </Button>
+        </Link>
       </header>
     </div>
   );
