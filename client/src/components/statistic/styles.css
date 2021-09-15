@@ -1,0 +1,10 @@
+.root-acc-details {
+	display: flex;
+	flex-direction: column;
+}
+
+.acc-details {
+	display: flex;
+	justify-content: space-between;
+	max-width: 500px;
+}

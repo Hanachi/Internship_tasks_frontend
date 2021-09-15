@@ -19,11 +19,8 @@ import { fetchMovies } from '../../api';
 import { Button, TextField } from '@material-ui/core';
 
 const useStyles = makeStyles({
-	root: {
-		'&.MuiDataGrid-root .MuiDataGrid-cell:focus': {
-			outline: 'none',
-		},
-		'&.MuiTableBody-root .MuiTableRow-root:hover': {
+	tableRow: {
+		'&:hover': {
 			cursor: 'pointer'
 		},
 	},
@@ -34,6 +31,9 @@ const useStyles = makeStyles({
 	},
 	searchField: {
 		marginRight: '20px'
+	},
+	container: {
+		maxHeight: '600px'
 	}
 });
 
@@ -80,11 +80,11 @@ const MoviesTable = () => {
 	];
 	useEffect(() => {
 		fetchMovies({ ...query })
-			.then(res => {
-				setMovies(res.data.data);
-				setCount(res.data.count);
-				updateHistory();
-			})
+		.then(res => {
+			setMovies(res.data.data);
+			setCount(res.data.count);
+			updateHistory();
+		})
 	}, [page, rowsPerPage, orderBy, direction, locationSearch])
 
 	const openMovie = (id) => {
@@ -132,7 +132,7 @@ const MoviesTable = () => {
 					Search
 				</Button>
 			</div>
-			<TableContainer component={Paper}>
+			<TableContainer className={classes.container} component={Paper}>
 				<MaterialTable className={''} size="medium" aria-label="a dense table">
 					<TableHead>
 						<TableRow key={''}>
@@ -153,14 +153,14 @@ const MoviesTable = () => {
 					</TableHead>
 					<TableBody>
 						{movies?.map((row) => (
-							<TableRow key={row._id} className={classes.tableR} onClick={() => openMovie(row._id)}>
+							<TableRow hover key={row._id} className={classes.tableRow} onClick={() => openMovie(row._id)}>
 								<TableCell component="th" scope="row">
 									{row._id}
 								</TableCell>
 								<TableCell >{row.title}</TableCell>
 								<TableCell>{row.year}</TableCell>
-								<TableCell>{row.genres.join(',')}</TableCell>
-								<TableCell>{row.actors.join(',')}</TableCell>
+								<TableCell>{row.genres.join(',\n')}</TableCell>
+								<TableCell>{row.actors.join(',\n')}</TableCell>
 								<TableCell>{row.imdbRating || '-'}</TableCell>
 							</TableRow>
 						))}
