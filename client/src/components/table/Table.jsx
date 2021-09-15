@@ -19,11 +19,8 @@ import { fetchMovies } from '../../api';
 import { Button, TextField } from '@material-ui/core';
 
 const useStyles = makeStyles({
-	root: {
-		'&.MuiDataGrid-root .MuiDataGrid-cell:focus': {
-			outline: 'none',
-		},
-		'&.MuiTableBody-root .MuiTableRow-root:hover': {
+	tableRow: {
+		'&:hover': {
 			cursor: 'pointer'
 		},
 	},
@@ -34,6 +31,9 @@ const useStyles = makeStyles({
 	},
 	searchField: {
 		marginRight: '20px'
+	},
+	container: {
+		maxHeight: '600px'
 	}
 });
 
@@ -46,10 +46,12 @@ const MoviesTable = () => {
 	const params = queryString.parse(locationSearch);
 	const [query, setQuery] = useState({
 		search: params.search || '',
-		page : Number(params.page) || 0,
+		page: Number(params.page) || 0,
 		rowsPerPage: Number(params.rowsPerPage) || 5,
+		orderBy: params.orderBy || 'title',
+		direction: params.direction || 'asc'
 	});
-	const { page, rowsPerPage, search } = query;
+	const { page, rowsPerPage, search, orderBy, direction } = query;
 	const columns = [
 		{
 			field: 'id',
@@ -83,19 +85,19 @@ const MoviesTable = () => {
 			setCount(res.data.count);
 			updateHistory();
 		})
-	}, [page, rowsPerPage, locationSearch])
-	
+	}, [page, rowsPerPage, orderBy, direction, locationSearch])
+
 	const openMovie = (id) => {
 		history.push(`/movies/${id}`);
 	}
-	
+
 	const searchOnKeyPressed = (event) => {
 		if (event.key === 'Enter') {
 			searchData();
 		}
 	}
 	const searchData = () => {
-		setQuery({...query, page: 0 });
+		setQuery({ ...query, page: 0 });
 		updateHistory();
 	}
 
@@ -104,6 +106,11 @@ const MoviesTable = () => {
 	}
 	const pageClick = (page) => {
 		setQuery({ ...query, page });
+		updateHistory();
+	}
+
+	const changeOrder = (orderBy, direction) => {
+		setQuery({ ...query, orderBy, direction });
 		updateHistory();
 	}
 	return (
@@ -115,7 +122,7 @@ const MoviesTable = () => {
 					label='Search'
 					value={search}
 					onKeyPress={searchOnKeyPressed}
-					onChange={(e) => setQuery({ ...query, search: e.target.value})}
+					onChange={(e) => setQuery({ ...query, search: e.target.value })}
 				/>
 				<Button
 					variant='contained'
@@ -125,48 +132,48 @@ const MoviesTable = () => {
 					Search
 				</Button>
 			</div>
-    <TableContainer component={Paper}>
-      <MaterialTable className={''} size="medium" aria-label="a dense table">
-      <TableHead>
-        <TableRow key={''}>
+			<TableContainer className={classes.container} component={Paper}>
+				<MaterialTable className={''} size="medium" aria-label="a dense table">
+					<TableHead>
+						<TableRow key={''}>
 							{columns.map((column) => (
 								<TableCell
 									key={column.field}
-								> 
+								>
 									<TableSortLabel
-										// active={orderBy === headCell.id}
-										// direction={orderBy === headCell.id ? order : 'asc'}
-										// onClick={createSortHandler(headCell.id)}
-            			>
-									{column.headerName}
+										active={orderBy === column.field}
+										direction={direction}
+										onClick={() => changeOrder(column.field, direction === 'asc' ? 'desc' : 'asc')}
+									>
+										{column.headerName}
 									</TableSortLabel>
 								</TableCell>
 							))}
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {movies?.map((row) => (
-					<TableRow key={row._id} className={classes.tableR} onClick={() => openMovie(row._id)}>
-            <TableCell component="th" scope="row">
-              {row._id}
-            </TableCell>
-            <TableCell >{row.title}</TableCell>
-            <TableCell>{row.year}</TableCell>
-            <TableCell>{row.genres.join(',')}</TableCell>
-            <TableCell>{row.actors.join(',')}</TableCell>
-						<TableCell>{row.imdbRating || '-'}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-      </MaterialTable>
-    </TableContainer>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{movies?.map((row) => (
+							<TableRow hover key={row._id} className={classes.tableRow} onClick={() => openMovie(row._id)}>
+								<TableCell component="th" scope="row">
+									{row._id}
+								</TableCell>
+								<TableCell >{row.title}</TableCell>
+								<TableCell>{row.year}</TableCell>
+								<TableCell>{row.genres.join(',\n')}</TableCell>
+								<TableCell>{row.actors.join(',\n')}</TableCell>
+								<TableCell>{row.imdbRating || '-'}</TableCell>
+							</TableRow>
+						))}
+					</TableBody>
+				</MaterialTable>
+			</TableContainer>
 			<TablePagination
 				rowsPerPageOptions={[5, 10, 25]}
 				component='div'
 				count={moviesCount}
 				rowsPerPage={rowsPerPage}
 				page={page}
-				onPageChange={() => {}}
+				onPageChange={() => { }}
 				backIconButtonProps={{
 					'aria-label': 'Previous Page',
 					'onClick': () => pageClick(Number(page) - 1),
@@ -177,7 +184,7 @@ const MoviesTable = () => {
 				}}
 				onRowsPerPageChange={(e) => setQuery({ ...query, rowsPerPage: e.target.value })}
 			/>
-    </div>
+		</div>
 	);
 }
 
