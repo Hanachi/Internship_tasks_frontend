@@ -4,7 +4,7 @@ import { Button, TextField, Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
 const Form = ({id, movie, setMovie, create, update, remove}) => {
-	const isCreate = id ? 'Edit or delete movie' : 'Create movie'
+	const isCreate = id ? 'Edit or delete movie' : 'Create movie';
 
 	return(
 		<form onSubmit={() => id ? update(id, movie) : create(movie)}>
@@ -41,7 +41,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 						value={movie.actors || ''}
 						label='Actors'
 						variant='outlined'
-						onChange={(event) => setMovie({ ...movie, actors: event.target.value.split(',') })}
+						onChange={(event) => setMovie({ ...movie, actors: event.target.value.split(',')})}
 						required
 					/>
 				</Grid>
@@ -52,6 +52,36 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 						variant='outlined'
 						placeholder='genres'
 						onChange={(event) => setMovie({ ...movie, genres: event.target.value.split(',') })}
+						required
+					/>
+				</Grid>
+				<Grid item xs={3}>
+					<TextField
+						value={movie.imdbRating || ''}
+						label='imdbRating'
+						variant='outlined'
+						placeholder='imdbRating'
+						onChange={(event) => setMovie({ ...movie, imdbRating: event.target.value })}
+						required
+					/>
+				</Grid>
+				<Grid item xs={3}>
+					<TextField
+						value={movie.contentRating || ''}
+						label='contentRating'
+						variant='outlined'
+						placeholder='contentRating'
+						onChange={(event) => setMovie({ ...movie, contentRating: event.target.value })}
+						required
+					/>
+				</Grid>
+				<Grid item xs={3}>
+					<TextField
+						value={movie.usersRating || ''}
+						label='usersRating'
+						variant='outlined'
+						placeholder='usersRating'
+						onChange={(event) => setMovie({ ...movie, usersRating: event.target.value.split(',') })}
 						required
 					/>
 				</Grid>

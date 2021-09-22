@@ -76,13 +76,17 @@ const MoviesTable = () => {
 		{
 			field: 'imdbRating',
 			headerName: 'imdbRating',
-		}
+		},
+		{
+			field: 'contentRating',
+			headerName: 'contentRating',
+		},
 	];
 	useEffect(() => {
 		fetchMovies({ ...query })
 		.then(res => {
 			setMovies(res.data.data);
-			setCount(res.data.count);
+			setCount(res.data.total);
 			updateHistory();
 		})
 	}, [page, rowsPerPage, orderBy, direction, locationSearch])
@@ -153,15 +157,16 @@ const MoviesTable = () => {
 					</TableHead>
 					<TableBody>
 						{movies?.map((row) => (
-							<TableRow hover key={row._id} className={classes.tableRow} onClick={() => openMovie(row._id)}>
+							<TableRow hover key={row.id} className={classes.tableRow} onClick={() => openMovie(row.id)}>
 								<TableCell component="th" scope="row">
-									{row._id}
+									{row.id}
 								</TableCell>
 								<TableCell >{row.title}</TableCell>
 								<TableCell>{row.year}</TableCell>
-								<TableCell>{row.genres.join(',\n')}</TableCell>
-								<TableCell>{row.actors.join(',\n')}</TableCell>
-								<TableCell>{row.imdbRating || '-'}</TableCell>
+								<TableCell>{row.genres?.map((genre) => genre.name).join(',\n')}</TableCell>
+								<TableCell>{row.actors?.map((actor) => actor.fullname).join(',\n')}</TableCell>
+								<TableCell>{row.imdbRating?.imdb_rating || '-'}</TableCell>
+								<TableCell>{row.contentRating?.content_rating || '-'}</TableCell>
 							</TableRow>
 						))}
 					</TableBody>

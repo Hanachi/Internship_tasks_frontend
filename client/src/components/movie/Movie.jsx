@@ -8,8 +8,16 @@ const Movie = (props) => {
 	useEffect(() => {
 		getMovieById(id)
 			.then(res => {
-				setMovie(res.data);
-				console.log(res)
+				setMovie((movie) => ({
+					...movie,
+					title: res.data.title,
+					year: res.data.year,
+					genres: res.data.genres.map(item => item.name),
+					actors: res.data.actors.map(item => item.fullname),
+					imdbRating: res.data.imdbRating.imdb_rating,
+					contentRating: res.data.contentRating.content_rating,
+					usersRating: res.data.usersRating.users_rating
+				}));
 			})
 	}, [])
 	const [movie, setMovie] = useState({});
