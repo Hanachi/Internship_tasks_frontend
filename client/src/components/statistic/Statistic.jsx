@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Statistic = () => {
 	const classes = useStyles();
-	const [statstic, setStatistic] = useState({});
+	const [statstic, setStatistic] = useState();
 
 	useEffect(() => {
 		getStatistic()
@@ -47,10 +47,10 @@ const Statistic = () => {
 					{statstic?.avgByYear?.map((el) => (
 						<div className='acc-details'>
 							<Typography>
-								Year: {el._id}
+								Year: {el.movie_year}
 							</Typography>
 							<Typography>
-								Average rating: {el.avgRatingYear.toFixed(2)}
+								Average rating: {Number(el.rating).toFixed(2)}
 							</Typography>
 						</div>
 					))}
@@ -68,7 +68,7 @@ const Statistic = () => {
 					{statstic?.genres?.map((el) => (
 						<div className='acc-details'>
 							<Typography>
-								{el}
+								{el.genres_name}
 							</Typography>
 						</div>
 					))}
@@ -86,10 +86,10 @@ const Statistic = () => {
 					{statstic?.avgByTitle?.map((el) => (
 						<div className='acc-details'>
 							<Typography>
-								{el._id}
+								{el.movie_title}
 							</Typography>
 							<Typography>
-								{el.avgRatingTitle.toFixed(2)}
+								{Number(el.rating).toFixed(2)}
 							</Typography>
 						</div>
 					))}
