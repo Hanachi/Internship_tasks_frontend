@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
@@ -17,6 +16,7 @@ import Movie from './components/movie/Movie';
 import CreateMovie from './components/movie/CreateMovie';
 import MoviesTable from './components/table/Table';
 import Statistic from './components/statistic/Statistic';
+import Auth from './components/auth/auth/Auth';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -30,6 +30,7 @@ ReactDOM.render(
         <Route path='/movies/create' component={CreateMovie} />
         <Route path='/movies/statistic' component={Statistic} />
         <Route path='/movies/:id/' component={Movie} />
+        <Route exact path='/auth' component={Auth} />
       </Switch>
     </BrowserRouter >
   </React.StrictMode>,
