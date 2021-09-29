@@ -10,9 +10,9 @@ import { getUsers } from './api';
 const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
+      <header data-testid="header" className="App-header">
         <Link to='/' style={{ textDecoration: 'none' }}>
-          <h2 >Movies</h2>
+          <h2>Movies</h2>
         </Link>
         <div >
           <Link to='/movies/create' style={{ textDecoration: 'none' }}>
