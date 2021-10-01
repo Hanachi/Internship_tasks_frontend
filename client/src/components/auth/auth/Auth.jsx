@@ -256,7 +256,7 @@ const Auth = () => {
 					<LockOutlineIcon />
 				</Avatar>
 				<Typography variant='h5'>
-					{isSignup ? 'Sign Up' : 'Login'}
+					{isSignup ? 'Sign Up' : 'Log In'}
 				</Typography>
 				<form className={classes.form} onSubmit={handleSubmit}>
 					<Grid container spacing={2}>
@@ -315,7 +315,7 @@ const Auth = () => {
 						color='primary'
 						className={classes.submit}
 					>
-						{isSignup ? 'Sign Up' : 'LogIn'}
+						{isSignup ? 'Sign Up' : 'Log In'}
 					</Button>
 					<GoogleLogin
 						clientId='898491732530-98tnc6k2bmh0rjolu0r4ig8ug05i8jo0.apps.googleusercontent.com'
@@ -329,7 +329,7 @@ const Auth = () => {
 								startIcon={<Icon />}
 								variant='contained'
 							>
-								Google Login
+								Google Log In
 							</Button>
 						)}
 						onSuccess={googleSuccess}

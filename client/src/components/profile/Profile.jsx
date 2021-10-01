@@ -70,7 +70,7 @@ const Profile = () => {
 							color='secondary'
 							onClick={logout}
 						>
-							Logout
+							Log Out
 						</Button>
 					</div>
 				) : (
@@ -80,7 +80,7 @@ const Profile = () => {
 						variant='contained'
 						color='primary'
 					>
-						Sign In
+						Log In
 					</Button>
 				)}
 			</Toolbar>
