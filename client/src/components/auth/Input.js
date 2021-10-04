@@ -26,7 +26,7 @@ const Input = ({
 		<Grid item xs={12} sm={half ? 6 : 12}>
 			<TextField
 				name={name}
-				error={error}
+				error={Boolean(error)}
 				helperText={helperText}
 				onChange={handleChange}
 				onBlur={handleValidation}
