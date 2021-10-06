@@ -17,7 +17,6 @@ import CreateMovie from './components/movie/CreateMovie';
 import MoviesTable from './components/table/Table';
 import Statistic from './components/statistic/Statistic';
 import Auth from './components/auth/auth/Auth';
-import ChatComponent from './components/chat/Chat';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -32,7 +31,6 @@ ReactDOM.render(
         <Route path='/movies/statistic' component={Statistic} />
         <Route path='/movies/:id/' component={Movie} />
         <Route exact path='/auth' component={Auth} />
-        <Route exact path='/chat' component={ChatComponent} />
       </Switch>
     </BrowserRouter >
   </React.StrictMode>,
