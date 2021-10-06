@@ -12,11 +12,11 @@ import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
-
 import { makeStyles } from '@material-ui/core/styles';
+import { Button, TextField } from '@material-ui/core';
 
 import { fetchMovies } from '../../api';
-import { Button, TextField } from '@material-ui/core';
+import ChatComponent from '../chat/Chat';
 
 const useStyles = makeStyles({
 	tableRow: {
@@ -34,7 +34,12 @@ const useStyles = makeStyles({
 	},
 	container: {
 		maxHeight: '600px'
-	}
+	},
+	footer: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center'
+	},
 });
 
 const MoviesTable = () => {
@@ -172,23 +177,26 @@ const MoviesTable = () => {
 					</TableBody>
 				</MaterialTable>
 			</TableContainer>
-			<TablePagination
-				rowsPerPageOptions={[5, 10, 25]}
-				component='div'
-				count={moviesCount}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onPageChange={() => { }}
-				backIconButtonProps={{
-					'aria-label': 'Previous Page',
-					'onClick': () => pageClick(Number(page) - 1),
-				}}
-				nextIconButtonProps={{
-					'aria-label': 'Next Page',
-					'onClick': () => pageClick(Number(page) + 1),
-				}}
-				onRowsPerPageChange={(e) => setQuery({ ...query, rowsPerPage: e.target.value })}
-			/>
+			<footer className={classes.footer}>
+				<ChatComponent />
+				<TablePagination
+					rowsPerPageOptions={[5, 10, 25]}
+					component='div'
+					count={moviesCount}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					onPageChange={() => { }}
+					backIconButtonProps={{
+						'aria-label': 'Previous Page',
+						'onClick': () => pageClick(Number(page) - 1),
+					}}
+					nextIconButtonProps={{
+						'aria-label': 'Next Page',
+						'onClick': () => pageClick(Number(page) + 1),
+					}}
+					onRowsPerPageChange={(e) => setQuery({ ...query, rowsPerPage: e.target.value })}
+				/>
+			</footer>
 		</div>
 	);
 }
