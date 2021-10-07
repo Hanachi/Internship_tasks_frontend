@@ -24,6 +24,12 @@ body {
   justify-content: space-between;
 }
 
+.chat-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .chat-window .chat-header p {
   display: block;
   padding: 0 1em 0 1em;
@@ -118,7 +124,7 @@ body {
   display: flex;
 }
 
-.chat-window .chat-footer input {
+.chat-window input {
   height: 100%;
   flex: 85%;
   border: 0;
@@ -143,7 +149,9 @@ body {
   color: lightgray;
 }
 
-.chat-close-button {
+
+
+.chat-close-button, .chat-search-button {
   background: transparent;
   outline: none;
   border: 0;
@@ -158,5 +166,5 @@ body {
   opacity: 0 !important;
 }
 .MuiPopover-root {
-  height: 460px;
+  height: 520px;
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 
-import { Chat, Send, Close } from '@material-ui/icons';
+import { Chat, Send, Close, Search } from '@material-ui/icons';
 import { Button, Popover } from '@material-ui/core';
 
 import { io } from 'socket.io-client';
@@ -15,9 +15,17 @@ const ChatComponent = () => {
 	const [messageList, setMessageList] = useState([]);
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [search, setSearch] = useState('');
+
+	const searchMessage = (value) => {
+		[...document.querySelectorAll("p")]
+			.filter(p => p.textContent == value)
+			.forEach(p => p.scrollIntoView())
+	}
 
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
+		setSearch('');
 	};
 
 	const handleClose = () => {
@@ -76,6 +84,15 @@ const ChatComponent = () => {
 					<button className='chat-close-button' onClick={handleClose}><Close /></button>
 				</div>
 			</div>
+				<div className='chat-search'>
+					<input
+						type='text'
+						value={search}
+						placeholder='Search Message...'
+						onChange={(event) => setSearch(event.target.value)}
+					/>
+					<button className='chat-search-button' onClick={() => searchMessage(search)}><Search /></button>
+				</div>
 			<div className='chat-body'>
 				<ScrollToBottom className='message-container'>
 					{messageList?.map((messageContent) => {
