@@ -18,9 +18,15 @@ body {
   position: relative;
   cursor: pointer;
 }
+
+.chat-header-content {
+  display: flex;
+  justify-content: space-between;
+}
+
 .chat-window .chat-header p {
   display: block;
-  padding: 0 1em 0 2em;
+  padding: 0 1em 0 1em;
   color: #fff;
   font-weight: 700;
   line-height: 45px;
@@ -68,29 +74,29 @@ body {
   word-break: break-word;
 }
 
-#you {
-  justify-content: flex-start;
-}
-
-#you .message-content {
-  justify-content: flex-start;
-}
-
-#you .message-meta {
-  justify-content: flex-start;
-  margin-left: 5px;
-}
-
 #other {
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 #other .message-content {
   justify-content: flex-start;
-  background-color: cornflowerblue;
 }
 
 #other .message-meta {
+  justify-content: flex-start;
+  margin-left: 5px;
+}
+
+#you {
+  justify-content: flex-end;
+}
+
+#you .message-content {
+  justify-content: flex-start;
+  background-color: cornflowerblue;
+}
+
+#you .message-meta {
   justify-content: flex-end;
   margin-right: 5px;
 }
@@ -135,6 +141,13 @@ body {
   outline: none;
   font-size: 25px;
   color: lightgray;
+}
+
+.chat-close-button {
+  background: transparent;
+  outline: none;
+  border: 0;
+  cursor: pointer;
 }
 
 .chat-window .chat-footer button:hover {

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
-import { Chat, Send } from '@material-ui/icons';
+
+import { Chat, Send, Close } from '@material-ui/icons';
+import { Button, Popover } from '@material-ui/core';
 
 import { io } from 'socket.io-client';
 
 import './Chat.css';
-import { Button, Popover } from '@material-ui/core';
 
 const socket = io('http://localhost:5000');
 
@@ -31,7 +32,7 @@ const ChatComponent = () => {
 			const messageData = {
 				author: user?.user,
 				message: currentMessage,
-				time: new Date(Date.now()).getHours() + ':' + new Date(Date.now()).getMinutes()
+				time: new Date(Date.now()).getHours() + ':' + (new Date(Date.now()).getMinutes() < 10 ? '0' : '') + new Date(Date.now()).getMinutes()
 			}
 			await socket.emit('send_message', messageData);
 		}
@@ -55,7 +56,7 @@ const ChatComponent = () => {
 
 	return (
 		<div>
-			<Button disabled={user ? false : true} onClick={handleClick}>
+			<Button className='open-chat' disabled={user ? false : true} onClick={handleClick}>
 				<Chat />
 			</Button>
 			<Popover
@@ -70,13 +71,16 @@ const ChatComponent = () => {
 				}}
 			>
 			<div className='chat-header'>
-				<p>Live chat</p>
+				<div className='chat-header-content'>
+					<p>Live chat</p>
+					<button className='chat-close-button' onClick={handleClose}><Close /></button>
+				</div>
 			</div>
 			<div className='chat-body'>
 				<ScrollToBottom className='message-container'>
 					{messageList?.map((messageContent) => {
 						return (	
-							<div key={messageContent?.id} className='message' id={user?.user?.username === messageContent?.author?.username ? 'you' : 'other'}>
+							<div key={messageContent?.id} className='message' id={user?.user?.id === messageContent?.author?.id ? 'you' : 'other'}>
 								<div>
 									<div className='message-content'>
 										<p>{messageContent?.content}</p>
