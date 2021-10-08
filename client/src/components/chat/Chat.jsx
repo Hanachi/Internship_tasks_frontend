@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 
 import { Chat, Send, Close, Search } from '@material-ui/icons';
-import { Button, Popover } from '@material-ui/core';
+import { Button, Popover, Tooltip } from '@material-ui/core';
 
 import { io } from 'socket.io-client';
 
@@ -64,9 +64,13 @@ const ChatComponent = () => {
 
 	return (
 		<div>
-			<Button className='open-chat' disabled={user ? false : true} onClick={handleClick}>
-				<Chat />
-			</Button>
+			<Tooltip title={!user ? 'Log In to start messaging' : 'Open chat'} arrow>
+				<span>
+					<Button className='open-chat' disabled={user ? false : true} onClick={handleClick}>
+						<Chat />
+					</Button>
+				</span>
+			</Tooltip>
 			<Popover
 				className='chat-window'
 				id={id}

@@ -7,6 +7,8 @@ import {
 	Toolbar,
 	Button,
 } from '@material-ui/core';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import useStyles from './styles';
 
@@ -16,6 +18,10 @@ const Profile = () => {
 	const location = useLocation();
 
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+	const [open, setOpen] = useState();
+
+	const getDataMessage = 'Log In to get movies data';
+	const notAdminMessage = 'You need admin role to create, update, edit or delete movie'
 
 	const logout = () => {
 		localStorage.clear();
@@ -35,6 +41,14 @@ const Profile = () => {
 		return JSON.parse(jsonPayload);
 	};
 
+	const handleClose = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+
+		setOpen(false);
+	}
+
 	useEffect(() => {
 		const token = user?.token;
 
@@ -45,9 +59,18 @@ const Profile = () => {
 				logout();
 			}
 		}
-
+		
 		setUser(JSON.parse(localStorage.getItem('profile')));
 	}, [location])
+
+	useEffect(() => {
+		let isMounted = true;
+		if(!user && isMounted) {
+			setOpen(true)
+		} else if(user?.user?.role !== 'admin') {
+			setOpen(true);
+		}
+	}, [])
 	
 
 	return (
@@ -84,6 +107,16 @@ const Profile = () => {
 					</Button>
 				)}
 			</Toolbar>
+			<Snackbar open={open} autoHideDuration={10000} onClose={handleClose}>
+				<MuiAlert
+					elevation={6}
+					variant="filled"
+					severity={!user ? 'error' : 'info'}
+					onClose={handleClose}
+				>
+					{!user ? getDataMessage : notAdminMessage}
+				</MuiAlert>
+			</Snackbar>
 		</div>
 	)
 }

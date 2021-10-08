@@ -46,6 +46,7 @@ const MoviesTable = () => {
 	const { search: locationSearch } = useLocation();
 	const history = useHistory();
 	const classes = useStyles();
+
 	const [movies, setMovies] = useState([]);
 	const [moviesCount, setCount] = useState(movies.length);
 	const params = queryString.parse(locationSearch);
@@ -56,6 +57,7 @@ const MoviesTable = () => {
 		orderBy: params.orderBy || 'title',
 		direction: params.direction || 'asc'
 	});
+
 	const { page, rowsPerPage, search, orderBy, direction } = query;
 	const columns = [
 		{
@@ -87,6 +89,7 @@ const MoviesTable = () => {
 			headerName: 'contentRating',
 		},
 	];
+
 	useEffect(() => {
 		fetchMovies({ ...query })
 		.then(res => {
