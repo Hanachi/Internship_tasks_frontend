@@ -35,11 +35,6 @@ const useStyles = makeStyles({
 	container: {
 		maxHeight: '600px'
 	},
-	footer: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		alignItems: 'center'
-	},
 });
 
 const MoviesTable = () => {
@@ -180,8 +175,7 @@ const MoviesTable = () => {
 					</TableBody>
 				</MaterialTable>
 			</TableContainer>
-			<footer className={classes.footer}>
-				<ChatComponent />
+			<footer>
 				<TablePagination
 					rowsPerPageOptions={[5, 10, 25]}
 					component='div'
@@ -200,6 +194,7 @@ const MoviesTable = () => {
 					onRowsPerPageChange={(e) => setQuery({ ...query, rowsPerPage: e.target.value })}
 				/>
 			</footer>
+			<ChatComponent />
 		</div>
 	);
 }

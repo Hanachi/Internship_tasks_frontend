@@ -50,7 +50,7 @@ const Profile = () => {
 	}
 
 	useEffect(() => {
-		const token = user?.token;
+		const token = user?.access_token;
 
 		if (token) {
 			const decodedToken = parseJwt(token);
@@ -107,7 +107,7 @@ const Profile = () => {
 					</Button>
 				)}
 			</Toolbar>
-			<Snackbar open={open} autoHideDuration={10000} onClose={handleClose}>
+			<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
 				<MuiAlert
 					elevation={6}
 					variant="filled"

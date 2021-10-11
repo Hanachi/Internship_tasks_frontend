@@ -134,6 +134,12 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 
+.open-chat {
+  position: fixed;
+  bottom: 0;
+  margin: 25px;
+}
+
 .chat-window .chat-footer button {
   border: 0;
   display: grid;
