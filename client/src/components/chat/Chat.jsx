@@ -63,10 +63,10 @@ const ChatComponent = () => {
 	}, [socket])
 
 	return (
-		<div>
+		<div className='open-chat'>
 			<Tooltip title={!user ? 'Log In to start messaging' : 'Open chat'} arrow>
 				<span>
-					<Button className='open-chat' disabled={user ? false : true} onClick={handleClick}>
+					<Button disabled={user ? false : true} onClick={handleClick}>
 						<Chat />
 					</Button>
 				</span>
