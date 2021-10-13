@@ -4,6 +4,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { parseJwt } from './api';
 import Auth from './components/auth/auth/Auth';
+import ChatComponent from './components/chat/Chat';
 
 
 const formData = {
@@ -28,7 +29,6 @@ export function login(formData) {
 
 export default function request(url, data) {
 	return new Promise((resolve, reject) => {
-		// const userID = parseInt(url.substr('/users/'.length), 10);
 		process.nextTick(() =>
 			(data.email && data.password)
 				? resolve({ access_token: token })
@@ -86,4 +86,10 @@ test('Button onClick render another auth form', () => {
 	fireEvent.click(button);
 	expect(button).toHaveTextContent('Already have an account? Sign In')
 	
+})
+
+test('disabled', () => {
+	render(<BrowserRouter><ChatComponent /></BrowserRouter>)
+	const button = screen.getByRole('button')
+	expect(button).toBeDisabled()
 })

@@ -12,11 +12,11 @@ import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
-
 import { makeStyles } from '@material-ui/core/styles';
+import { Button, TextField } from '@material-ui/core';
 
 import { fetchMovies } from '../../api';
-import { Button, TextField } from '@material-ui/core';
+import ChatComponent from '../chat/Chat';
 
 const useStyles = makeStyles({
 	tableRow: {
@@ -34,13 +34,14 @@ const useStyles = makeStyles({
 	},
 	container: {
 		maxHeight: '600px'
-	}
+	},
 });
 
 const MoviesTable = () => {
 	const { search: locationSearch } = useLocation();
 	const history = useHistory();
 	const classes = useStyles();
+
 	const [movies, setMovies] = useState([]);
 	const [moviesCount, setCount] = useState(movies.length);
 	const params = queryString.parse(locationSearch);
@@ -51,6 +52,7 @@ const MoviesTable = () => {
 		orderBy: params.orderBy || 'title',
 		direction: params.direction || 'asc'
 	});
+
 	const { page, rowsPerPage, search, orderBy, direction } = query;
 	const columns = [
 		{
@@ -82,6 +84,7 @@ const MoviesTable = () => {
 			headerName: 'contentRating',
 		},
 	];
+
 	useEffect(() => {
 		fetchMovies({ ...query })
 		.then(res => {
@@ -172,23 +175,26 @@ const MoviesTable = () => {
 					</TableBody>
 				</MaterialTable>
 			</TableContainer>
-			<TablePagination
-				rowsPerPageOptions={[5, 10, 25]}
-				component='div'
-				count={moviesCount}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onPageChange={() => { }}
-				backIconButtonProps={{
-					'aria-label': 'Previous Page',
-					'onClick': () => pageClick(Number(page) - 1),
-				}}
-				nextIconButtonProps={{
-					'aria-label': 'Next Page',
-					'onClick': () => pageClick(Number(page) + 1),
-				}}
-				onRowsPerPageChange={(e) => setQuery({ ...query, rowsPerPage: e.target.value })}
-			/>
+			<footer>
+				<TablePagination
+					rowsPerPageOptions={[5, 10, 25]}
+					component='div'
+					count={moviesCount}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					onPageChange={() => { }}
+					backIconButtonProps={{
+						'aria-label': 'Previous Page',
+						'onClick': () => pageClick(Number(page) - 1),
+					}}
+					nextIconButtonProps={{
+						'aria-label': 'Next Page',
+						'onClick': () => pageClick(Number(page) + 1),
+					}}
+					onRowsPerPageChange={(e) => setQuery({ ...query, rowsPerPage: e.target.value })}
+				/>
+			</footer>
+			<ChatComponent />
 		</div>
 	);
 }

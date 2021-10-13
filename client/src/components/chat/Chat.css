@@ -18,9 +18,21 @@ body {
   position: relative;
   cursor: pointer;
 }
+
+.chat-header-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .chat-window .chat-header p {
   display: block;
-  padding: 0 1em 0 2em;
+  padding: 0 1em 0 1em;
   color: #fff;
   font-weight: 700;
   line-height: 45px;
@@ -54,6 +66,7 @@ body {
   height: auto;
   min-height: 40px;
   max-width: 120px;
+  min-width: 90px;
   background-color: #43a047;
   border-radius: 5px;
   color: white;
@@ -67,29 +80,29 @@ body {
   word-break: break-word;
 }
 
-#you {
+#other {
   justify-content: flex-start;
 }
 
-#you .message-content {
+#other .message-content {
   justify-content: flex-start;
 }
 
-#you .message-meta {
+#other .message-meta {
   justify-content: flex-start;
   margin-left: 5px;
 }
 
-#other {
+#you {
   justify-content: flex-end;
 }
 
-#other .message-content {
-  justify-content: flex-end;
+#you .message-content {
+  justify-content: flex-start;
   background-color: cornflowerblue;
 }
 
-#other .message-meta {
+#you .message-meta {
   justify-content: flex-end;
   margin-right: 5px;
 }
@@ -111,16 +124,20 @@ body {
   display: flex;
 }
 
-.chat-window .chat-footer input {
+.chat-window input {
   height: 100%;
   flex: 85%;
   border: 0;
   padding: 0 0.7em;
   font-size: 1em;
-  border-right: 1px dotted #607d8b;
-
   outline: none;
   font-family: "Open Sans", sans-serif;
+}
+
+.open-chat {
+  position: fixed;
+  bottom: 0;
+  margin: 25px;
 }
 
 .chat-window .chat-footer button {
@@ -136,9 +153,22 @@ body {
   color: lightgray;
 }
 
+
+
+.chat-close-button, .chat-search-button {
+  background: transparent;
+  outline: none;
+  border: 0;
+  cursor: pointer;
+}
+
 .chat-window .chat-footer button:hover {
   color: #43a047;
 }
+
 .hide {
   opacity: 0 !important;
+}
+.MuiPopover-root {
+  height: 520px;
 }
