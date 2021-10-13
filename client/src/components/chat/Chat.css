@@ -130,10 +130,14 @@ body {
   border: 0;
   padding: 0 0.7em;
   font-size: 1em;
-  border-right: 1px dotted #607d8b;
-
   outline: none;
   font-family: "Open Sans", sans-serif;
+}
+
+.open-chat {
+  position: fixed;
+  bottom: 0;
+  margin: 25px;
 }
 
 .chat-window .chat-footer button {
