@@ -6,11 +6,14 @@ import {
 	Avatar,
 	Toolbar,
 	Button,
+	Menu,
+	MenuItem,
 } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
 import useStyles from './styles';
+import { KeyboardArrowDown } from '@material-ui/icons';
 
 const Profile = () => {
 	const classes = useStyles();
@@ -18,7 +21,9 @@ const Profile = () => {
 	const location = useLocation();
 
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-	const [open, setOpen] = useState();
+	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [open, setOpen] = useState(false);
+	const openProfile = Boolean(anchorEl)
 
 	const getDataMessage = 'Log In to get movies data';
 	const notAdminMessage = 'You need admin role to create, update, edit or delete movie'
@@ -31,6 +36,17 @@ const Profile = () => {
 		setUser(null);
 	}
 
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClose = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setAnchorEl(null)
+		setOpen(false);
+	}
 	const parseJwt = (token) => {
 		var base64Url = token.split('.')[1];
 		var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -41,13 +57,6 @@ const Profile = () => {
 		return JSON.parse(jsonPayload);
 	};
 
-	const handleClose = (event, reason) => {
-		if (reason === 'clickaway') {
-			return;
-		}
-
-		setOpen(false);
-	}
 
 	useEffect(() => {
 		const token = user?.access_token;
@@ -66,7 +75,7 @@ const Profile = () => {
 	useEffect(() => {
 		let isMounted = true;
 		if(!user && isMounted) {
-			setOpen(true)
+			setOpen(true);
 		} else if(user?.user?.role !== 'admin') {
 			setOpen(true);
 		}
@@ -77,27 +86,57 @@ const Profile = () => {
 		<div className={classes.appBar} position='static' color='inherit'>
 
 			<Toolbar className={classes.toolbar}>
+				<Link to='/movies/statistic' style={{ textDecoration: 'none' }}>
+					<Button
+						className='statisticBtn'
+						variant='contained'
+						color='secondary'
+					>
+						Statistic
+					</Button>
+				</Link>
 				{user ? (
 					<div className={classes.profile}>
-						<Avatar
-							className={classes.purple}
-							alt={user?.user?.username}
-							src={user?.user?.imageUrl}
-						>
-							{user?.user?.username?.charAt(0)}
-						</Avatar>
-						<Typography className={classes.userName} variant='h6'>{user?.user?.username}</Typography>
 						<Button
-							variant='contained'
-							className={classes.logout}
-							color='secondary'
-							onClick={logout}
+							id="basic-button"
+							aria-controls="basic-menu"
+							aria-haspopup="true"
+							aria-expanded={openProfile ? 'true' : undefined}
+							onClick={handleClick}
+							endIcon={<KeyboardArrowDown />}
 						>
-							Log Out
+							<Avatar
+								className={classes.purple}
+								alt={user?.user?.username}
+								src={user?.user?.imageUrl}
+							>
+								{user?.user?.username?.charAt(0)}
+							</Avatar>
+							{/* <Typography className={classes.userName} variant='h6'>{user?.user?.username}</Typography> */}
 						</Button>
+						<Menu
+							id="basic-menu"
+							anchorEl={anchorEl}
+							open={openProfile}
+							onClose={handleClose}
+							MenuListProps={{
+								'aria-labelledby': 'basic-button',
+							}}
+							anchorOrigin={{
+								vertical: 'top',
+								horizontal: 'left',
+							}}
+							transformOrigin={{
+								vertical: 'top',
+								horizontal: 'left',
+							}}
+						>
+							<MenuItem onClick={logout}>Logout</MenuItem>
+						</Menu>
 					</div>
 				) : (
 					<Button
+						className={classes.loginButton}
 						component={Link}
 						to='/auth'
 						variant='contained'

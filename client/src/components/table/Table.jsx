@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import queryString from 'query-string';
 
@@ -29,12 +29,21 @@ const useStyles = makeStyles({
 		justifyContent: 'flex-end',
 		margin: '20px'
 	},
+	createMovie: {
+		display: 'flex',
+		justifyContent: 'flex-start',
+		margin: '20px'
+	},
 	searchField: {
 		marginRight: '20px'
 	},
 	container: {
 		maxHeight: '600px'
 	},
+	tableToolbar: {
+		display: 'flex',
+		justifyContent: 'space-between'
+	}
 });
 
 const MoviesTable = () => {
@@ -122,22 +131,33 @@ const MoviesTable = () => {
 	}
 	return (
 		<div>
-			<div className={classes.search}>
-				<TextField
-					name='search'
-					className={classes.searchField}
-					label='Search'
-					value={search}
-					onKeyPress={searchOnKeyPressed}
-					onChange={(e) => setQuery({ ...query, search: e.target.value })}
-				/>
-				<Button
-					variant='contained'
-					color='secondary'
-					onClick={searchData}
-				>
-					Search
-				</Button>
+			<div className={classes.tableToolbar}>
+				<Link className={classes.createMovie} to='/movies/create' style={{ textDecoration: 'none' }}>
+					<Button
+						className='create-btn'
+						variant='contained'
+						color='primary'
+					>
+						Create movie
+					</Button>
+				</Link>
+				<div className={classes.search}>
+					<TextField
+						name='search'
+						className={classes.searchField}
+						label='Search'
+						value={search}
+						onKeyPress={searchOnKeyPressed}
+						onChange={(e) => setQuery({ ...query, search: e.target.value })}
+					/>
+					<Button
+						variant='contained'
+						color='secondary'
+						onClick={searchData}
+					>
+						Search
+					</Button>
+				</div>
 			</div>
 			<TableContainer className={classes.container} component={Paper}>
 				<MaterialTable className={''} size="medium" aria-label="a dense table">
@@ -175,7 +195,7 @@ const MoviesTable = () => {
 					</TableBody>
 				</MaterialTable>
 			</TableContainer>
-			<footer>
+			<div className='table-footer'>
 				<TablePagination
 					rowsPerPageOptions={[5, 10, 25]}
 					component='div'
@@ -193,7 +213,7 @@ const MoviesTable = () => {
 					}}
 					onRowsPerPageChange={(e) => setQuery({ ...query, rowsPerPage: e.target.value })}
 				/>
-			</footer>
+			</div>
 			<ChatComponent />
 		</div>
 	);

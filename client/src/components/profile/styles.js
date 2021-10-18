@@ -3,12 +3,11 @@ import { deepPurple } from '@material-ui/core/colors';
 
 export default makeStyles((theme) => ({
 	appBar: {
+		width: '100%',
 		borderRadius: 5,
 		margin: '30px 0',
 		display: 'flex',
 		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
 	},
 	heading: {
 		color: 'rgba(53, 51, 97, 1)',
@@ -19,13 +18,12 @@ export default makeStyles((theme) => ({
 	},
 	toolbar: {
 		display: 'flex',
-		justifyContent: 'center',
-		width: '600px',
+		justifyContent: 'space-between',
+		width: '100%'
 	},
 	profile: {
 		display: 'flex',
-		justifyContent: 'space-between',
-		width: '400px',
+		justifyContent: 'space-between '
 	},
 	userName: {
 		display: 'flex',
@@ -39,4 +37,13 @@ export default makeStyles((theme) => ({
 		color: theme.palette.getContrastText(deepPurple[500]),
 		backgroundColor: deepPurple[500],
 	},
+	loginButton: {
+		display: 'flex',
+		justifyContent: 'flex-end',
+	},
+	statisticBtn: {
+		display: 'flex',
+		justifyContent: 'flex-start',
+		width: '100%'
+	}
 }));
