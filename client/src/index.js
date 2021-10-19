@@ -17,7 +17,7 @@ import CreateMovie from './components/movie/CreateMovie';
 import MoviesTable from './components/table/Table';
 import Statistic from './components/statistic/Statistic';
 import Auth from './components/auth/auth/Auth';
-import Footer from './components/footer/Footer';
+import Users from './components/users/Users';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -33,6 +33,7 @@ ReactDOM.render(
 						<Route path='/movies/statistic' component={Statistic} />
 						<Route path='/movies/:id/' component={Movie} />
 						<Route exact path='/auth' component={Auth} />
+						<Route exact path='/users' component={Users} />
 					</Switch>
       </div>
     </BrowserRouter >

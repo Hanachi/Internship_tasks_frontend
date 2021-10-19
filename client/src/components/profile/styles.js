@@ -5,9 +5,10 @@ export default makeStyles((theme) => ({
 	appBar: {
 		width: '100%',
 		borderRadius: 5,
-		margin: '30px 0',
+		marginBottom: '15px',
 		display: 'flex',
 		flexDirection: 'row',
+		alignItems: 'center'
 	},
 	heading: {
 		color: 'rgba(53, 51, 97, 1)',
@@ -18,12 +19,20 @@ export default makeStyles((theme) => ({
 	},
 	toolbar: {
 		display: 'flex',
-		justifyContent: 'space-between',
-		width: '100%'
+		justifyContent: 'flex-start',
+		width: '100%',
 	},
 	profile: {
 		display: 'flex',
-		justifyContent: 'space-between '
+		width: '100%',
+		flexDirection: 'row',
+		justifyContent: 'flex-end'
+	},
+	profileBar: {
+		display: 'flex',
+		width: '250px',
+		alignItems: 'center',
+		justifyContent: 'space-between'
 	},
 	userName: {
 		display: 'flex',
@@ -37,13 +46,7 @@ export default makeStyles((theme) => ({
 		color: theme.palette.getContrastText(deepPurple[500]),
 		backgroundColor: deepPurple[500],
 	},
-	loginButton: {
-		display: 'flex',
-		justifyContent: 'flex-end',
-	},
-	statisticBtn: {
-		display: 'flex',
-		justifyContent: 'flex-start',
-		width: '100%'
+	arrowIcon: {
+		color: 'white'
 	}
 }));

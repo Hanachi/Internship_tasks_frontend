@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button, TextField, Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
 const Form = ({id, movie, setMovie, create, update, remove}) => {
 	const isCreate = id ? 'Edit or delete movie' : 'Create movie';
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+	const isAdmin = user?.user?.role == 'admin';
 
 	return(
 		<form onSubmit={() => id ? update(id, movie) : create(movie)}>
@@ -21,6 +23,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 				<Grid item xs={3}>
 					<TextField
 						value={movie.title || ''}
+						disabled={isAdmin ? false : true}
 						label='Title'
 						variant='outlined'
 						onChange={(event) => setMovie({ ...movie, title: event.target.value })}
@@ -30,6 +33,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 				<Grid item xs={3}>
 					<TextField
 						value={movie.year || ''}
+						disabled={isAdmin ? false : true}
 						label='Year'
 						variant='outlined'
 						onChange={(event) => setMovie({ ...movie, year: event.target.value })}
@@ -39,6 +43,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 				<Grid item xs={3}>
 					<TextField
 						value={movie.actors || ''}
+						disabled={isAdmin ? false : true}
 						label='Actors'
 						variant='outlined'
 						onChange={(event) => setMovie({ ...movie, actors: event.target.value.split(',')})}
@@ -48,6 +53,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 				<Grid item xs={3}>
 					<TextField
 						value={movie.genres || ''}
+						disabled={isAdmin ? false : true}
 						label='Genres'
 						variant='outlined'
 						placeholder='genres'
@@ -58,6 +64,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 				<Grid item xs={3}>
 					<TextField
 						value={movie.imdbRating || ''}
+						disabled={isAdmin ? false : true}
 						label='imdbRating'
 						variant='outlined'
 						placeholder='imdbRating'
@@ -68,6 +75,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 				<Grid item xs={3}>
 					<TextField
 						value={movie.contentRating || ''}
+						disabled={isAdmin ? false : true}
 						label='contentRating'
 						variant='outlined'
 						placeholder='contentRating'
@@ -78,6 +86,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 				<Grid item xs={3}>
 					<TextField
 						value={movie.usersRating || ''}
+						disabled={isAdmin ? false : true}
 						label='usersRating'
 						variant='outlined'
 						placeholder='usersRating'
@@ -85,7 +94,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 						required
 					/>
 				</Grid>
-				{!id ? (
+				{(isAdmin && !id) ? (
 					<Grid item xs={3}>
 						<Button
 							type='submit'
@@ -95,7 +104,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 							Create
 						</Button>
 					</Grid>
-					) : (
+					) : isAdmin ? (
 					<>
 						<Grid item xs={3}>
 							<Button
@@ -116,8 +125,8 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 								Delete
 							</Button>
 						</Grid>
-					</>
-				)}
+						</>
+				): null}
 			</Grid>
 		</form >
 	)

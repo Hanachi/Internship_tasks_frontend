@@ -21,6 +21,7 @@ const Movie = (props) => {
 			})
 	}, [])
 	const [movie, setMovie] = useState({});
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 	const history = useHistory();
 	const { id } = props.match.params;
 

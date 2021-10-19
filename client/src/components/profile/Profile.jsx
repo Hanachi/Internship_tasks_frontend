@@ -8,6 +8,8 @@ import {
 	Button,
 	Menu,
 	MenuItem,
+	Tabs,
+	Tab,
 } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -21,9 +23,9 @@ const Profile = () => {
 	const location = useLocation();
 
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [anchorEl, setAnchorEl] = useState(null);
 	const [open, setOpen] = useState(false);
-	const openProfile = Boolean(anchorEl)
+	const openProfile = Boolean(anchorEl);
 
 	const getDataMessage = 'Log In to get movies data';
 	const notAdminMessage = 'You need admin role to create, update, edit or delete movie'
@@ -84,27 +86,24 @@ const Profile = () => {
 
 	return (
 		<div className={classes.appBar} position='static' color='inherit'>
-
 			<Toolbar className={classes.toolbar}>
-				<Link to='/movies/statistic' style={{ textDecoration: 'none' }}>
-					<Button
-						className='statisticBtn'
-						variant='contained'
-						color='secondary'
-					>
-						Statistic
-					</Button>
-				</Link>
+				<Tabs
+					value={history.location.pathname}
+					indicatorColor="secondary"
+					aria-label="secondary tabs example"
+				>
+					<Tab component={Link} to='/movies' value="/movies" label="Movies" />
+					<Tab component={Link} to='/movies/statistic' value="/movies/statistic" label="Statistic" />
+					{user?.user?.role == 'admin' ? (
+						<Tab component={Link} to='/users' value="/users" label="Users"  />
+					)
+					: null
+					}
+				</Tabs>
+			</Toolbar>
 				{user ? (
 					<div className={classes.profile}>
-						<Button
-							id="basic-button"
-							aria-controls="basic-menu"
-							aria-haspopup="true"
-							aria-expanded={openProfile ? 'true' : undefined}
-							onClick={handleClick}
-							endIcon={<KeyboardArrowDown />}
-						>
+						<div className={classes.profileBar}>
 							<Avatar
 								className={classes.purple}
 								alt={user?.user?.username}
@@ -112,40 +111,51 @@ const Profile = () => {
 							>
 								{user?.user?.username?.charAt(0)}
 							</Avatar>
-							{/* <Typography className={classes.userName} variant='h6'>{user?.user?.username}</Typography> */}
-						</Button>
-						<Menu
-							id="basic-menu"
-							anchorEl={anchorEl}
-							open={openProfile}
-							onClose={handleClose}
-							MenuListProps={{
-								'aria-labelledby': 'basic-button',
-							}}
-							anchorOrigin={{
-								vertical: 'top',
-								horizontal: 'left',
-							}}
-							transformOrigin={{
-								vertical: 'top',
-								horizontal: 'left',
-							}}
-						>
-							<MenuItem onClick={logout}>Logout</MenuItem>
-						</Menu>
+							<Typography className={classes.userName} variant='h6'>{user?.user?.username}</Typography>
+							<Button
+								id='basic-button'
+								aria-controls='basic-menu'
+								aria-haspopup='true'
+								aria-expanded={openProfile ? 'true' : undefined}
+								onClick={handleClick}
+								endIcon={<KeyboardArrowDown className={classes.arrowIcon} />}
+							>
+							</Button>
+							<Menu
+								id='basic-menu'
+								anchorEl={anchorEl}
+								open={openProfile}
+								onClose={handleClose}
+								MenuListProps={{
+									'aria-labelledby': 'basic-button',
+								}}
+								getContentAnchorEl={null}
+								anchorOrigin={{
+									vertical: 'bottom',
+									horizontal: 'center',
+								}}
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'center',
+								}}
+							>
+								<MenuItem onClick={logout}>Logout</MenuItem>
+							</Menu>
+						</div>
 					</div>
 				) : (
-					<Button
-						className={classes.loginButton}
-						component={Link}
-						to='/auth'
-						variant='contained'
-						color='primary'
-					>
-						Log In
-					</Button>
+					<Toolbar className={classes.profile}>
+						<Link to='/auth' style={{ textDecoration: 'none' }}>
+							<Button
+								className={classes.loginButton}
+								variant='contained'
+								color='primary'
+							>
+								Log In
+							</Button>
+						</Link>
+					</Toolbar>
 				)}
-			</Toolbar>
 			<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
 				<MuiAlert
 					elevation={6}
