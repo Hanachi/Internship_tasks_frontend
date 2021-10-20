@@ -173,3 +173,6 @@ body {
 .MuiPopover-root {
   height: 520px;
 }
+@media only screen and (max-width:800px) {
+
+}

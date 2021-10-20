@@ -1,0 +1,62 @@
+.appBar {
+	width: 100%;
+	border-radius: 5;
+	margin-bottom: 15px;
+	display: flex;
+	flex-direction: row;
+align-items: center;
+}
+.heading {
+	color: rgba(53, 51, 97, 1);
+	font-family: 'Brush Script MT';
+}
+.image {
+	margin-left: 15px;
+}
+.toolbar {
+	display: flex;
+	justify-content: flex-start;
+	width: 100%;
+}
+.profile {
+	display: flex;
+	width: 100%;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+.profileBar {
+	display: flex;
+	width: 250px;
+	align-items: center;
+	justify-content: space-between;
+}
+.userName {
+	display: flex;
+	align-items: center;
+}
+.brandContainer {
+	display: flex;
+	align-items: center;
+}
+.purple {
+	background-color: blue !important;
+}
+.arrowIcon {
+	color: white;
+}
+
+@media only screen and (max-width:800px) {
+ .appBar {
+	 display: flex;
+	 flex-direction: column-reverse;
+	 justify-content: center;
+	 overflow: hidden;
+ }
+ .toolbar {
+	 justify-content: center;
+	 margin-bottom: 10px;
+ }
+ .profile {
+	 justify-content: center;
+ }
+}

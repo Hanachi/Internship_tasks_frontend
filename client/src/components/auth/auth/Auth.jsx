@@ -66,6 +66,7 @@ const Auth = () => {
 	const handleShowPassword = () => {
 		setShowPassword((prevShowPassword) => !prevShowPassword);
 	}
+
 	const handleClose = (event, reason) => {
 		if (reason === 'clickaway') {
 			return;
@@ -184,6 +185,7 @@ const Auth = () => {
 
 		validateData();
 		const isFormValid = Object.keys(errors).every((item) => errors[item] === null);
+		console.log(errors)
 
 		if (isFormValid) {
 			if (isSignup) {
@@ -233,13 +235,19 @@ const Auth = () => {
 		setFormData(initialState);
 	}
 
+	const submitOnKeyPressed = (event) => {
+		if (event.key === 'Enter') {
+			document.getElementById('submit-form').click()
+		}
+	}
+
 	const googleSuccess = async (res) => {
 		const token = res?.tokenId;
 
 		try {
 			googleLogin(token, history);
 
-		} catch (error) {		// const result = res?.profileObj;
+		} catch (error) {
 			console.log(error)
 		}
 	}
@@ -258,7 +266,7 @@ const Auth = () => {
 				<Typography variant='h5'>
 					{isSignup ? 'Sign Up' : 'Log In'}
 				</Typography>
-				<form className={classes.form} onSubmit={handleSubmit}>
+				<form className={classes.form} onSubmit={handleSubmit} onKeyPress={submitOnKeyPressed}>
 					<Grid container spacing={2}>
 						{isSignup && (
 							<React.Fragment>
@@ -309,6 +317,7 @@ const Auth = () => {
 						)}
 					</Grid>
 					<Button
+						id='submit-form'
 						type='submit'
 						fullWidth
 						variant='contained'

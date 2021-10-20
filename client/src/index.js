@@ -9,7 +9,6 @@ import {
 
 
 import './index.css';
-import App from './App';
 
 import reportWebVitals from './reportWebVitals';
 import Movie from './components/movie/Movie';
@@ -18,12 +17,13 @@ import MoviesTable from './components/table/Table';
 import Statistic from './components/statistic/Statistic';
 import Auth from './components/auth/auth/Auth';
 import Users from './components/users/Users';
+import Header from './Header';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
+			<Header />
       <div className='app'>
-				<App />
 					<Switch>
 						<Route path='/' exact component={() => <Redirect to='/movies' />} />
 						<Route exact path='/movies'>

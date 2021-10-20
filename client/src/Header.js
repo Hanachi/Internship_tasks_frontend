@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Profile from './components/profile/Profile';
-import './App.css';
+import './Header.css';
 
-const App = () => {
+const Header = () => {
   return (
     <div className="App">
       <header data-testid="header" className="App-header">
@@ -17,4 +17,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default Header;

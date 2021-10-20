@@ -48,10 +48,6 @@ const useStyles = makeStyles({
 		right: 0,
 		margin: '25px'
 	},
-	contentContainer: {
-		marginLeft: '100px',
-		marginRight: '100px'
-	}
 });
 
 const MoviesTable = () => {
@@ -111,6 +107,14 @@ const MoviesTable = () => {
 			updateHistory();
 		})
 	}, [page, rowsPerPage, orderBy, direction, locationSearch])
+
+	useEffect(() => {
+		const delayDebounceFn = setTimeout(() => {
+			console.log(query.search)
+			searchData();
+		}, 400)
+		return () => clearTimeout(delayDebounceFn)
+	}, [query.search])
 
 	const openMovie = (id) => {
 		history.push(`/movies/${id}`);

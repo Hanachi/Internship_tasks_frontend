@@ -1,10 +1,10 @@
 import  { fireEvent, render, screen , cleanup } from  '@testing-library/react';
 import '@testing-library/user-event';
-import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { parseJwt } from './api';
 import Auth from './components/auth/auth/Auth';
 import ChatComponent from './components/chat/Chat';
+import Header from './Header';
 
 
 const formData = {
@@ -49,8 +49,8 @@ test('Get user data, generate jwt token, return parsed JWT', () => {
 });
 
 test('App title is Movies', () => {
-	render(<BrowserRouter><App /></BrowserRouter>);
-	const title = screen.getByText('Movies');
+	render(<BrowserRouter><Header /></BrowserRouter>);
+	const title = document.querySelector('h1');
 	expect(title).toHaveTextContent('Movies');
 })
 
@@ -64,13 +64,13 @@ test('Button click', () => {
 })
 
 test('Statistic button exists', () => {
-	render(<BrowserRouter><App /></BrowserRouter>);
+	render(<BrowserRouter><Header /></BrowserRouter>);
 	const statistic = screen.getByText('Statistic');
 	expect(statistic).toBeInTheDocument()
 })
 
 test('Header have own class', () => {
-	const { container } = render(<BrowserRouter><App /></BrowserRouter>);
+	const { container } = render(<BrowserRouter><Header /></BrowserRouter>);
 	const header = container.querySelector('header');
 	expect(header).toHaveClass('App-header');
 })

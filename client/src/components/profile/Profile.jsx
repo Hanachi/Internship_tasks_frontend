@@ -14,27 +14,29 @@ import {
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
-import useStyles from './styles';
+import './Profile.css'
 import { KeyboardArrowDown } from '@material-ui/icons';
 
 const Profile = () => {
-	const classes = useStyles();
 	const history = useHistory();
 	const location = useLocation();
-
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 	const [anchorEl, setAnchorEl] = useState(null);
-	const [open, setOpen] = useState(false);
 	const openProfile = Boolean(anchorEl);
-
+	const [open, setOpen] = useState(false);
 	const getDataMessage = 'Log In to get movies data';
-	const notAdminMessage = 'You need admin role to create, update, edit or delete movie'
+	const notAdminMessage = 'You need admin role to create, update, edit or delete movie';
+
+	useEffect(() => {
+		setAnchorEl(null)
+	}, [])
 
 	const logout = () => {
 		localStorage.clear();
-
+		
 		history.push('/auth');
-
+		
+		setAnchorEl(null);
 		setUser(null);
 	}
 
@@ -46,7 +48,7 @@ const Profile = () => {
 		if (reason === 'clickaway') {
 			return;
 		}
-		setAnchorEl(null)
+		setAnchorEl(null);
 		setOpen(false);
 	}
 	const parseJwt = (token) => {
@@ -81,12 +83,11 @@ const Profile = () => {
 		} else if(user?.user?.role !== 'admin') {
 			setOpen(true);
 		}
-	}, [])
-	
+	}, [])	
 
 	return (
-		<div className={classes.appBar} position='static' color='inherit'>
-			<Toolbar className={classes.toolbar}>
+		<div className='appBar' position='static' color='inherit'>
+			<Toolbar className='toolbar'>
 				<Tabs
 					value={history.location.pathname}
 					indicatorColor="secondary"
@@ -102,23 +103,23 @@ const Profile = () => {
 				</Tabs>
 			</Toolbar>
 				{user ? (
-					<div className={classes.profile}>
-						<div className={classes.profileBar}>
+					<div className='profile'>
+						<div className='profileBar'>
 							<Avatar
-								className={classes.purple}
+								className='purple'
 								alt={user?.user?.username}
 								src={user?.user?.imageUrl}
 							>
 								{user?.user?.username?.charAt(0)}
 							</Avatar>
-							<Typography className={classes.userName} variant='h6'>{user?.user?.username}</Typography>
+							<Typography className='userName' variant='h6'>{user?.user?.username}</Typography>
 							<Button
 								id='basic-button'
 								aria-controls='basic-menu'
 								aria-haspopup='true'
 								aria-expanded={openProfile ? 'true' : undefined}
 								onClick={handleClick}
-								endIcon={<KeyboardArrowDown className={classes.arrowIcon} />}
+								endIcon={<KeyboardArrowDown className='arrowIcon' />}
 							>
 							</Button>
 							<Menu
@@ -144,10 +145,10 @@ const Profile = () => {
 						</div>
 					</div>
 				) : (
-					<Toolbar className={classes.profile}>
+					<Toolbar className='profile'>
 						<Link to='/auth' style={{ textDecoration: 'none' }}>
 							<Button
-								className={classes.loginButton}
+								className='loginButton'
 								variant='contained'
 								color='primary'
 							>
