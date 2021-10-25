@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { getMovieById, updateMovie, deleteMovie } from '../../api';
 import Form from '../shared/Form';
+import MoviePage from './MoviePage';
 
 const Movie = (props) => {
 	useEffect(() => {
@@ -16,10 +17,14 @@ const Movie = (props) => {
 					actors: res.data.actors.map(item => item.fullname),
 					imdbRating: res.data.imdbRating.imdb_rating,
 					contentRating: res.data.contentRating.content_rating,
-					usersRating: res.data.usersRating.users_rating
+					usersRating: res.data.usersRating.users_rating,
+					posterUrl: res.data.posterUrl,
+					videoUrl: res.data.videoUrl,
+					storyline: res.data.storyline
 				}));
 			})
 	}, [])
+
 	const [movie, setMovie] = useState({});
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 	const history = useHistory();
@@ -34,6 +39,7 @@ const Movie = (props) => {
 		history.push('/movies');
 	}
 	return (
+		<>
 			<Form
 				id={id}
 				movie={movie}
@@ -41,6 +47,12 @@ const Movie = (props) => {
 				update={update}
 				remove={remove}
 			/>
+			<MoviePage 
+				id={id}
+				movie={movie}
+				user={user}
+			/>
+		</>
 	)
 }
 

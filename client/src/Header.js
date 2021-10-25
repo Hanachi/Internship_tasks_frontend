@@ -9,7 +9,7 @@ const Header = () => {
     <div className="App">
       <header data-testid="header" className="App-header">
         <Link to='/' style={{ textDecoration: 'none' }}>
-          <h1>Movies</h1>
+          <h1>Movies Library</h1>
         </Link>
         <Profile />
       </header>
