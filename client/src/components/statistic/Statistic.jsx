@@ -65,9 +65,9 @@ const Statistic = () => {
 					<Typography className={classes.heading}>All movies genres</Typography>
 				</AccordionSummary>
 				<AccordionDetails className='root-acc-details'>
-					{statstic?.genres?.map((el) => (
+					{statstic?.genres?.map((el, index) => (
 						<div className='acc-details'>
-							<Typography>
+							<Typography key={index}>
 								{el.genres_name}
 							</Typography>
 						</div>

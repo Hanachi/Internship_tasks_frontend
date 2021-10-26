@@ -1,12 +1,23 @@
 import React, { useState } from 'react';
 
-import { Button, TextareaAutosize, TextField, Typography } from '@material-ui/core';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { Button, TextField } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
 const Form = ({id, movie, setMovie, create, update, remove}) => {
-	const isCreate = id ? 'Movie page' : 'Create movie';
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 	const isAdmin = user?.user?.role == 'admin';
+	const [open, setOpen] = React.useState(false);
+
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
 
 	return(
 		<form onSubmit={() => id ? update(id, movie) : create(movie)}>
@@ -17,9 +28,6 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 				justifyContent='center'
 				alignItems='center'
 			>
-				<Grid item xs={12}>
-					<Typography>{isCreate}</Typography>
-				</Grid>
 				<Grid item xs={4}>
 					<TextField
 						value={movie.title || ''}
@@ -115,7 +123,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 				</Grid>
 				<Grid item xs={4}>
 					<TextField
-						value={movie.videoUrl || ''}
+						value={movie?.videoUrl || ''}
 						disabled={isAdmin ? false : true}
 						label='videoUrl'
 						variant='outlined'
@@ -126,9 +134,8 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 				</Grid>
 				<Grid item xs={12}>
 					<TextField
-						name='storyline'
-						rows={7}
-						rowsMax={7}
+						minRows={7}
+						maxRows={7}
 						multiline
 						fullWidth
 						variant='outlined'
@@ -150,7 +157,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 					</Grid>
 					) : isAdmin ? (
 					<>
-						<Grid item xs={3}>
+						<Grid item xs={2}>
 							<Button
 								type='submit'
 								variant='contained'
@@ -159,17 +166,32 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 								Update
 							</Button>
 						</Grid>
-						<Grid item xs={3}>
+						<Grid item xs={2}>
 							<Button
-								type='submit'
 								variant='contained'
 								color='secondary'
-								onClick={() => remove(id)}
+								onClick={handleClickOpen}
 							>
 								Delete
 							</Button>
+							<Dialog
+								open={open}
+								onClose={handleClose}
+								aria-labelledby="alert-dialog-title"
+								aria-describedby="alert-dialog-description"
+							>
+								<DialogTitle id="alert-dialog-title">{'Do you really wanna delete this movie?'}</DialogTitle>
+								<DialogActions>
+									<Button onClick={handleClose} color="primary">
+										Cancel
+									</Button>
+									<Button type='submit' onClick={() => remove(id)} color="primary" autoFocus>
+										Agree
+									</Button>
+								</DialogActions>
+							</Dialog>
 						</Grid>
-						</>
+					</>
 				): null}
 			</Grid>
 		</form >

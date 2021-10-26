@@ -9,9 +9,10 @@ const CreateMovie = () => {
 	const [movie, setMovie] = useState({});
 	const history = useHistory();
 
-	const create = (movie) => {
-		createMovie(movie);
-		history.push('/');
+	const create = async (movie) => {
+		const res = await createMovie(movie);
+		const id = await res?.data?.id;
+		history.push(`/movies/${id}`);
 	}
 	return (
 		<Form
