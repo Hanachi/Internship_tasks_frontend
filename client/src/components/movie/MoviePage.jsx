@@ -8,11 +8,13 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 
+import { VIDEO_URL_REGEXP } from '../../constants/regExps';
 import notFoundImage from '../../videoNotFound.jpg'
 import './Movie.css';
 
 const MoviePage = ({movie}) => {
 	const iframeContent = movie?.videoUrl ? movie?.videoUrl : notFoundImage;
+	const validVideo = movie?.videoUrl?.match(VIDEO_URL_REGEXP);
 
 	return (
 		<div className='container'>
@@ -51,14 +53,18 @@ const MoviePage = ({movie}) => {
 				</Typography>
 				<Typography><b>Storyline:</b>&nbsp;{movie?.storyline}</Typography>
 			<div className='movie-trailer'>
-				<iframe
-					className='iframe'
-					frameborder='0'
-					scrolling='no'
-					src={iframeContent}
-					allowFullScreen
-				>
-				</iframe>
+				{validVideo ? (
+					<iframe
+						className='iframe'
+						frameBorder='0'
+						scrolling='no'
+						src={movie?.videoUrl}
+						allowFullScreen
+					>
+					</iframe>
+				): (
+					<img className='no-content-image' src={notFoundImage} />
+				)}
 			</div>
 			</div>
 		</div>

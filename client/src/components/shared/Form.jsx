@@ -146,7 +146,12 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 					/>
 				</Grid>
 				{(isAdmin && !id) ? (
-					<Grid item xs={3}>
+					<Grid item
+						container
+						direction='row'
+						justifyContent='center'
+						alignItems='center'
+					>
 						<Button
 							type='submit'
 							variant='contained'
@@ -174,26 +179,26 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 							>
 								Delete
 							</Button>
-							<Dialog
-								open={open}
-								onClose={handleClose}
-								aria-labelledby="alert-dialog-title"
-								aria-describedby="alert-dialog-description"
-							>
-								<DialogTitle id="alert-dialog-title">{'Do you really wanna delete this movie?'}</DialogTitle>
-								<DialogActions>
-									<Button onClick={handleClose} color="primary">
-										Cancel
-									</Button>
-									<Button type='submit' onClick={() => remove(id)} color="primary" autoFocus>
-										Agree
-									</Button>
-								</DialogActions>
-							</Dialog>
 						</Grid>
 					</>
 				): null}
 			</Grid>
+			<Dialog
+				open={open}
+				onClose={handleClose}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">{'Do you really wanna delete this movie?'}</DialogTitle>
+				<DialogActions>
+					<Button onClick={handleClose} color="primary">
+						Cancel
+					</Button>
+					<Button type='submit' onClick={() => remove(id)} color="primary" autoFocus>
+						Agree
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</form >
 	)
 }

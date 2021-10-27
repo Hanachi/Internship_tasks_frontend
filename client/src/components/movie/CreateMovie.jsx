@@ -11,7 +11,7 @@ const CreateMovie = () => {
 
 	const create = async (movie) => {
 		const res = await createMovie(movie);
-		const id = await res?.data?.id;
+		const id = res?.data?.id;
 		history.push(`/movies/${id}`);
 	}
 	return (

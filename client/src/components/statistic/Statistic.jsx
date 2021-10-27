@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -24,13 +25,19 @@ const useStyles = makeStyles((theme) => ({
 
 const Statistic = () => {
 	const classes = useStyles();
+	const history = useHistory();
 	const [statstic, setStatistic] = useState();
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
 	useEffect(() => {
-		getStatistic()
-		.then(res => {
-			setStatistic(res.data);
-		})
+		if(user){
+			getStatistic()
+			.then(res => {
+				setStatistic(res.data);
+			})
+		} else {
+			history.push('/auth')
+		}
 	}, []);
 	
 	return (
