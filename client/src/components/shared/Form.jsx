@@ -20,7 +20,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 	};
 
 	return(
-		<form onSubmit={() => id ? update(id, movie) : create(movie)}>
+		<form onSubmit={() => update(id, movie)}>
 			<Grid
 				container
 				spacing={3}
@@ -153,7 +153,7 @@ const Form = ({id, movie, setMovie, create, update, remove}) => {
 						alignItems='center'
 					>
 						<Button
-							type='submit'
+							onClick={() => create(movie)}
 							variant='contained'
 							color='primary'
 						>
