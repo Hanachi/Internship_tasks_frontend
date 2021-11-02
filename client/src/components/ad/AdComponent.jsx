@@ -4,13 +4,12 @@ import { useDfpSlot } from "./DfpSlot";
 const AdComponent = () => {
 	useDfpSlot({
 		path: '/6355419/Travel/Europe/France/Paris',
-		size: [100, 100],
+		size: ['fluid'],
 		id: 'banner-ad',
 	});
 	return (
 		<div
 			id='banner-ad'
-			style={{ width: '100px', height: '100px' }}
 		/>
 	)
 };
