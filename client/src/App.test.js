@@ -65,7 +65,7 @@ test('Button click', () => {
 	expect(mockCallBack).toHaveBeenCalled();
 })
 
-test('Statistic button exists', () => {
+test('Profile div container have className = appBar', () => {
 	const { container } = render(<BrowserRouter><Profile /></BrowserRouter>);
 	const divContainer = container.querySelector('div');
 	expect(divContainer).toHaveClass('appBar');
