@@ -5,7 +5,6 @@ import { parseJwt } from './api';
 import Auth from './components/auth/auth/Auth';
 import ChatComponent from './components/chat/Chat';
 import Profile from './components/profile/Profile';
-import MoviesTable from './components/table/Table';
 import Header from './Header';
 
 
