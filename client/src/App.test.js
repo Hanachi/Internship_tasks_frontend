@@ -4,6 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { parseJwt } from './api';
 import Auth from './components/auth/auth/Auth';
 import ChatComponent from './components/chat/Chat';
+import Profile from './components/profile/Profile';
+import MoviesTable from './components/table/Table';
 import Header from './Header';
 
 
@@ -64,9 +66,9 @@ test('Button click', () => {
 })
 
 test('Statistic button exists', () => {
-	render(<BrowserRouter><Header /></BrowserRouter>);
-	const statistic = screen.getByText('Statistic');
-	expect(statistic).toBeInTheDocument()
+	const { container } = render(<BrowserRouter><Profile /></BrowserRouter>);
+	const divContainer = container.querySelector('div');
+	expect(divContainer).toHaveClass('appBar');
 })
 
 test('Header have own class', () => {
