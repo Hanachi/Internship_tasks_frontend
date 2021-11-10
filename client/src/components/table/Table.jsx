@@ -100,12 +100,16 @@ const MoviesTable = () => {
 	];
 
 	useEffect(() => {
-		fetchMovies({ ...query })
-		.then(res => {
-			setMovies(res.data.data);
-			setCount(res.data.total);
-			updateHistory();
-		})
+		if(user) {
+			fetchMovies({ ...query })
+			.then(res => {
+				setMovies(res.data.data);
+				setCount(res.data.total);
+				updateHistory();
+			})
+		} else {
+			history.push('/auth')
+		}
 	}, [page, rowsPerPage, orderBy, direction, locationSearch])
 
 	useEffect(() => {
