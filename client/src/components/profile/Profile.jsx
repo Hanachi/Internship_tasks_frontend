@@ -87,76 +87,67 @@ const Profile = () => {
 
 	return (
 		<div className='appBar' position='static' color='inherit'>
-			<Toolbar className='toolbar'>
-				<Tabs
-					value={history.location.pathname}
-					indicatorColor="secondary"
-					aria-label="secondary tabs example"
-				>
-					<Tab component={Link} to='/movies' value="/movies" label="Movies" />
-					<Tab component={Link} to='/movies/statistic' value="/movies/statistic" label="Statistic" />
-					{user?.user?.role == 'admin' ? (
-						<Tab component={Link} to='/users' value="/users" label="Users"  />
-					)
-					: null
-					}
-				</Tabs>
-			</Toolbar>
-				{user ? (
-					<div className='profile'>
-						<div className='profileBar'>
-							<Avatar
-								className='purple'
-								alt={user?.user?.username}
-								src={user?.user?.imageUrl}
-							>
-								{user?.user?.username?.charAt(0)}
-							</Avatar>
-							<Typography className='userName' variant='h6'>{user?.user?.username}</Typography>
-							<Button
-								id='basic-button'
-								aria-controls='basic-menu'
-								aria-haspopup='true'
-								aria-expanded={openProfile ? 'true' : undefined}
-								onClick={handleClick}
-								endIcon={<KeyboardArrowDown className='arrowIcon' />}
-							>
-							</Button>
-							<Menu
-								id='basic-menu'
-								anchorEl={anchorEl}
-								open={openProfile}
-								onClose={handleClose}
-								MenuListProps={{
-									'aria-labelledby': 'basic-button',
-								}}
-								getContentAnchorEl={null}
-								anchorOrigin={{
-									vertical: 'bottom',
-									horizontal: 'center',
-								}}
-								transformOrigin={{
-									vertical: 'top',
-									horizontal: 'center',
-								}}
-							>
-								<MenuItem onClick={logout}>Logout</MenuItem>
-							</Menu>
-						</div>
+			{user ? (
+				<Toolbar className='toolbar'>
+					<Tabs
+						value={history.location.pathname}
+						indicatorColor="secondary"
+						aria-label="secondary tabs example"
+					>
+						<Tab component={Link} to='/movies' value="/movies" label="Movies" />
+						<Tab component={Link} to='/movies/statistic' value="/movies/statistic" label="Statistic" />
+						{user?.user?.role == 'admin' ? (
+							<Tab component={Link} to='/users' value="/users" label="Users"  />
+						)
+						: null
+						}
+					</Tabs>
+				</Toolbar>
+			): null
+			}
+			{user ? (
+				<div className='profile'>
+					<div className='profileBar'>
+						<Avatar
+							className='purple'
+							alt={user?.user?.username}
+							src={user?.user?.imageUrl}
+						>
+							{user?.user?.username?.charAt(0)}
+						</Avatar>
+						<Typography className='userName' variant='h6'>{user?.user?.username}</Typography>
+						<Button
+							id='basic-button'
+							aria-controls='basic-menu'
+							aria-haspopup='true'
+							aria-expanded={openProfile ? 'true' : undefined}
+							onClick={handleClick}
+							endIcon={<KeyboardArrowDown className='arrowIcon' />}
+						>
+						</Button>
+						<Menu
+							id='basic-menu'
+							anchorEl={anchorEl}
+							open={openProfile}
+							onClose={handleClose}
+							MenuListProps={{
+								'aria-labelledby': 'basic-button',
+							}}
+							getContentAnchorEl={null}
+							anchorOrigin={{
+								vertical: 'bottom',
+								horizontal: 'center',
+							}}
+							transformOrigin={{
+								vertical: 'top',
+								horizontal: 'center',
+							}}
+						>
+							<MenuItem onClick={logout}>Logout</MenuItem>
+						</Menu>
 					</div>
-				) : (
-					<Toolbar className='profile'>
-						<Link to='/auth' style={{ textDecoration: 'none' }}>
-							<Button
-								className='loginButton'
-								variant='contained'
-								color='primary'
-							>
-								Log In
-							</Button>
-						</Link>
-					</Toolbar>
-				)}
+				</div>
+			) : null}
 			<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
 				<MuiAlert
 					elevation={6}

@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { Tooltip } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import CloseIcon from '@material-ui/icons/Close';
+
 import { getMovieById, updateMovie, deleteMovie } from '../../api';
 import Form from '../shared/Form';
 import MoviePage from './MoviePage';
 
 const Movie = (props) => {
+	const [editMode, setEditMode] = useState(false);
+	
 	useEffect(() => {
 		getMovieById(id)
 			.then(res => {
@@ -23,36 +29,51 @@ const Movie = (props) => {
 					storyline: res.data.storyline
 				}));
 			})
-	}, [])
+	}, [editMode])
 
 	const [movie, setMovie] = useState({});
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 	const history = useHistory();
+	const isAdmin = user?.user?.role == 'admin';
+	const icon = !editMode ? <EditIcon /> : <CloseIcon />;
+	const tooltipText = !editMode ? 'Edit movie' : 'Cancel'
 	const { id } = props.match.params;
 
 	const update = (id, movie) => {
 		updateMovie(id, movie);
-		history.push('/movies');
+		history.push(`/movies/${id}`);
 	}
 	const remove = (id) => {
 		deleteMovie(id);
 		history.push('/movies');
 	}
 	return (
-		<>
-			<Form
-				id={id}
-				movie={movie}
-				setMovie={setMovie}
-				update={update}
-				remove={remove}
-			/>
-			<MoviePage 
-				id={id}
-				movie={movie}
-				user={user}
-			/>
-		</>
+		<React.Fragment>
+			{isAdmin ? (
+				<div className='edit-movie'>
+					<Tooltip title={tooltipText}>
+					<div onClick={() => setEditMode(!editMode)}>{icon}</div>
+					</Tooltip>
+				</div>
+			) : null
+			}
+			{!editMode ? (
+				<MoviePage 
+					id={id}
+					movie={movie}
+					user={user}
+				/>
+			):(
+				<Form
+					id={id}
+					movie={movie}
+					setMovie={setMovie}
+					update={update}
+					remove={remove}
+				/>
+			)
+			}
+		</React.Fragment>
 	)
 }
 

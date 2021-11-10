@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -24,13 +25,19 @@ const useStyles = makeStyles((theme) => ({
 
 const Statistic = () => {
 	const classes = useStyles();
+	const history = useHistory();
 	const [statstic, setStatistic] = useState();
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
 	useEffect(() => {
-		getStatistic()
-		.then(res => {
-			setStatistic(res.data);
-		})
+		if(user){
+			getStatistic()
+			.then(res => {
+				setStatistic(res.data);
+			})
+		} else {
+			history.push('/auth')
+		}
 	}, []);
 	
 	return (
@@ -65,9 +72,9 @@ const Statistic = () => {
 					<Typography className={classes.heading}>All movies genres</Typography>
 				</AccordionSummary>
 				<AccordionDetails className='root-acc-details'>
-					{statstic?.genres?.map((el) => (
+					{statstic?.genres?.map((el, index) => (
 						<div className='acc-details'>
-							<Typography>
+							<Typography key={index}>
 								{el.genres_name}
 							</Typography>
 						</div>
