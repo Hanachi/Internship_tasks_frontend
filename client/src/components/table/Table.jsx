@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import queryString from 'query-string';
 
@@ -13,10 +13,12 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
+import SpeedDial from "@material-ui/lab/SpeedDial";
 
 import { fetchMovies } from '../../api';
 import ChatComponent from '../chat/Chat';
+import { Add } from '@material-ui/icons';
 
 const useStyles = makeStyles({
 	tableRow: {
@@ -27,13 +29,24 @@ const useStyles = makeStyles({
 	search: {
 		display: 'flex',
 		justifyContent: 'flex-end',
-		margin: '20px'
+		margin: '20px',
+		width: '100%'
 	},
 	searchField: {
 		marginRight: '20px'
 	},
 	container: {
-		maxHeight: '600px'
+		maxHeight: '800px',
+	},
+	tableToolbar: {
+		display: 'flex',
+		justifyContent: 'space-between'
+	},
+	addMovie: {
+		position: 'fixed',
+		bottom: 0,
+		right: 0,
+		margin: '25px'
 	},
 });
 
@@ -45,6 +58,7 @@ const MoviesTable = () => {
 	const [movies, setMovies] = useState([]);
 	const [moviesCount, setCount] = useState(movies.length);
 	const params = queryString.parse(locationSearch);
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 	const [query, setQuery] = useState({
 		search: params.search || '',
 		page: Number(params.page) || 0,
@@ -86,13 +100,25 @@ const MoviesTable = () => {
 	];
 
 	useEffect(() => {
-		fetchMovies({ ...query })
-		.then(res => {
-			setMovies(res.data.data);
-			setCount(res.data.total);
-			updateHistory();
-		})
+		if(user) {
+			fetchMovies({ ...query })
+			.then(res => {
+				setMovies(res.data.data);
+				setCount(res.data.total);
+				updateHistory();
+			})
+		} else {
+			history.push('/auth')
+		}
 	}, [page, rowsPerPage, orderBy, direction, locationSearch])
+
+	useEffect(() => {
+		const delayDebounceFn = setTimeout(() => {
+			console.log(query.search)
+			searchData();
+		}, 400)
+		return () => clearTimeout(delayDebounceFn)
+	}, [query.search])
 
 	const openMovie = (id) => {
 		history.push(`/movies/${id}`);
@@ -121,23 +147,18 @@ const MoviesTable = () => {
 		updateHistory();
 	}
 	return (
-		<div>
-			<div className={classes.search}>
-				<TextField
-					name='search'
-					className={classes.searchField}
-					label='Search'
-					value={search}
-					onKeyPress={searchOnKeyPressed}
-					onChange={(e) => setQuery({ ...query, search: e.target.value })}
-				/>
-				<Button
-					variant='contained'
-					color='secondary'
-					onClick={searchData}
-				>
-					Search
-				</Button>
+		<div className={classes.contentContainer}>
+			<div className={classes.tableToolbar}>
+				<div className={classes.search}>
+					<TextField
+						name='search'
+						className={classes.searchField}
+						label='Search'
+						value={search}
+						onKeyPress={searchOnKeyPressed}
+						onChange={(e) => setQuery({ ...query, search: e.target.value })}
+					/>
+				</div>
 			</div>
 			<TableContainer className={classes.container} component={Paper}>
 				<MaterialTable className={''} size="medium" aria-label="a dense table">
@@ -175,7 +196,7 @@ const MoviesTable = () => {
 					</TableBody>
 				</MaterialTable>
 			</TableContainer>
-			<footer>
+			<div className='table-footer'>
 				<TablePagination
 					rowsPerPageOptions={[5, 10, 25]}
 					component='div'
@@ -193,8 +214,19 @@ const MoviesTable = () => {
 					}}
 					onRowsPerPageChange={(e) => setQuery({ ...query, rowsPerPage: e.target.value })}
 				/>
-			</footer>
+			</div>
 			<ChatComponent />
+			{user?.user?.role == 'admin' ? (
+				<Link to='/movies/create' style={{ textDecoration: 'none' }}>
+				<SpeedDial
+					className={classes.addMovie}
+					ariaLabel="SpeedDial basic example"
+					sx={{ position: 'absolute', bottom: 16, right: 16 }}
+					icon={<Add />}
+				>
+				</SpeedDial>
+			</Link>
+			): null}
 		</div>
 	);
 }

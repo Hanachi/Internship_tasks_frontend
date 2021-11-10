@@ -1,0 +1,45 @@
+.container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.movie-info {
+	width: 50%;
+	margin-left: 30px;
+}
+
+.iframe, .no-content-image {
+	height: 260px;
+	width: 500px;
+}
+
+.edit-movie {
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+	margin-bottom: 30px;
+	cursor: pointer;
+}
+
+.card-footer-title {
+	display: flex;
+	justify-content: center;
+	text-align: center;
+}
+
+.root {
+	width: 265px;
+}
+
+.genre-chip {
+	margin: 2px;
+}
+
+.movie-trailer {
+	margin-top: 25px;
+}
+
+.media {
+	height: 370px;
+}
