@@ -18,6 +18,7 @@ import Statistic from './components/statistic/Statistic';
 import Auth from './components/auth/auth/Auth';
 import Users from './components/users/Users';
 import Header from './Header';
+import AdComponent from './components/ad/AdComponent';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -35,6 +36,7 @@ ReactDOM.render(
 						<Route exact path='/auth' component={Auth} />
 						<Route exact path='/users' component={Users} />
 					</Switch>
+			<AdComponent />
       </div>
     </BrowserRouter >
   </React.StrictMode>,
