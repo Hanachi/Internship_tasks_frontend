@@ -19,6 +19,7 @@ import SpeedDial from "@material-ui/lab/SpeedDial";
 import { fetchMovies } from '../../api';
 import ChatComponent from '../chat/Chat';
 import { Add } from '@material-ui/icons';
+import { LOGIN_ROUTE } from '../../constants/routes';
 
 const useStyles = makeStyles({
 	tableRow: {
@@ -108,13 +109,12 @@ const MoviesTable = () => {
 				updateHistory();
 			})
 		} else {
-			history.push('/auth')
+			history.push(LOGIN_ROUTE)
 		}
 	}, [page, rowsPerPage, orderBy, direction, locationSearch])
 
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
-			console.log(query.search)
 			searchData();
 		}, 400)
 		return () => clearTimeout(delayDebounceFn)

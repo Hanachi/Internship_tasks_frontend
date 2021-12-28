@@ -16,6 +16,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 
 import './Profile.css'
 import { KeyboardArrowDown } from '@material-ui/icons';
+import { LOGIN_ROUTE } from '../../constants/routes';
 
 const Profile = () => {
 	const history = useHistory();
@@ -34,7 +35,7 @@ const Profile = () => {
 	const logout = () => {
 		localStorage.clear();
 		
-		history.push('/auth');
+		history.push(LOGIN_ROUTE);
 		
 		setAnchorEl(null);
 		setUser(null);

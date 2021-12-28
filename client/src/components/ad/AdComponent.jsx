@@ -1,5 +1,7 @@
 import React from "react";
+
 import { useDfpSlot } from "./DfpSlot";
+import "./Ad.css"
 
 const AdComponent = () => {
 	useDfpSlot({
