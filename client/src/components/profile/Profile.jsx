@@ -78,10 +78,7 @@ const Profile = () => {
 	}, [location])
 
 	useEffect(() => {
-		let isMounted = true;
-		if(!user && isMounted) {
-			setOpen(true);
-		} else if(user?.user?.role !== 'admin') {
+		if(!user || user?.user?.role !== 'admin') {
 			setOpen(true);
 		}
 	}, [])	
@@ -97,7 +94,7 @@ const Profile = () => {
 					>
 						<Tab component={Link} to='/movies' value="/movies" label="Movies" />
 						<Tab component={Link} to='/movies/statistic' value="/movies/statistic" label="Statistic" />
-						{user?.user?.role == 'admin' ? (
+						{user?.user?.role === 'admin' ? (
 							<Tab component={Link} to='/users' value="/users" label="Users"  />
 						)
 						: null

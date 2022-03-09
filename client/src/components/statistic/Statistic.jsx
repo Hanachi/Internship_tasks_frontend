@@ -11,6 +11,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { getStatistic } from "../../api";
 
 import './styles.css';
+import { LOGIN_ROUTE } from "../../constants/routes";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -27,7 +28,7 @@ const Statistic = () => {
 	const classes = useStyles();
 	const history = useHistory();
 	const [statstic, setStatistic] = useState();
-	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+	const [user] = useState(JSON.parse(localStorage.getItem('profile')));
 
 	useEffect(() => {
 		if(user){
@@ -36,13 +37,13 @@ const Statistic = () => {
 				setStatistic(res.data);
 			})
 		} else {
-			history.push('/auth')
+			history.push(LOGIN_ROUTE)
 		}
 	}, []);
 	
 	return (
 		<div className={classes.root}>
-			<Accordion container>
+			<Accordion>
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon />}
 					aria-controls="panel1a-content"
@@ -51,8 +52,8 @@ const Statistic = () => {
 					<Typography className={classes.heading}>Average ratings by year</Typography>
 				</AccordionSummary>
 				<AccordionDetails className='root-acc-details'>
-					{statstic?.avgByYear?.map((el) => (
-						<div className='acc-details'>
+					{statstic?.avgByYear?.map((el, index) => (
+						<div className='acc-details' key={index}>
 							<Typography>
 								Year: {el.movie_year}
 							</Typography>
@@ -73,8 +74,8 @@ const Statistic = () => {
 				</AccordionSummary>
 				<AccordionDetails className='root-acc-details'>
 					{statstic?.genres?.map((el, index) => (
-						<div className='acc-details'>
-							<Typography key={index}>
+						<div className='acc-details'  key={index}>
+							<Typography>
 								{el.genres_name}
 							</Typography>
 						</div>
@@ -90,8 +91,8 @@ const Statistic = () => {
 					<Typography className={classes.heading}>Average ratings by title</Typography>
 				</AccordionSummary>
 				<AccordionDetails className='root-acc-details'>
-					{statstic?.avgByTitle?.map((el) => (
-						<div className='acc-details'>
+					{statstic?.avgByTitle?.map((el, index) => (
+						<div className='acc-details' key={index}>
 							<Typography>
 								{el.movie_title}
 							</Typography>

@@ -3,3 +3,8 @@
 	justify-content: center;
 	margin: 60px;
 }
+.users-paper {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+}

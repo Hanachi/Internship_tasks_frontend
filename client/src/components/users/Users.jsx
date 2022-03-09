@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Paper, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 
 import { getUsers } from '../../api';
 import './Users.css'
@@ -13,10 +13,12 @@ const Users = () => {
 			setUsers(res.data);
 		})
 	}, [])
-
+	
 	return (
 		<div className='users-container'>
-			{JSON.stringify(users)}
+				<Typography className="users-paper">
+					{JSON.stringify(users)}
+				</Typography>
 		</div>
 	)
 }

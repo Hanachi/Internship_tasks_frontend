@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { GoogleLogin } from 'react-google-login';
 
 import {
 	Avatar,
@@ -15,17 +16,14 @@ import LockOutlineIcon from '@material-ui/icons/LockOutlined';
 
 import { FIRSTNAME_AND_LASTNAME_REGEXP, EMAIL_REGEXP, PASSWORD_REGEXP } from '../../../constants/regExps';
 import { FIRSTNAME_ERROR_TEXT, EMAIL_ERROR_TEXT, PASSWORD_ERROR_TEXT } from '../../../constants/validationErrorText';
+import { ALREADY_HAVE_AN_ACCOUNT, SIGN_UP } from '../../../constants/authFormsText';
+import { LOGIN_ROUTE } from '../../../constants/routes';
 
-import { GoogleLogin } from 'react-google-login';
+import { signIn, signUp, googleLogin, checkEmail } from '../../../api/index';
 
 import Icon from '../icon';
 import Input from '../Input';
-
-import { signIn, signUp, googleLogin } from '../../../api/index';
-
 import useStyles from './styles';
-import { ALREADY_HAVE_AN_ACCOUNT, SIGN_UP } from '../../../constants/authFormsText';
-import { LOGIN_ROUTE } from '../../../constants/routes';
 
 const initialState = {
 	username: '',
@@ -52,6 +50,8 @@ const SignUp = () => {
 
 	const isFormValid = Object.keys(errors).every((item) => errors[item] === null);
 	const snackbarMessage = success ? 'Success' : 'Form Is Not Valid';
+	const firstUpdate = useRef(true);
+	let timeOutId;
 
 	const handleShowPassword = () => {
 		setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -65,7 +65,18 @@ const SignUp = () => {
 		setOpen(false);
 	}
 
-	const signUpValidation = (e, form) => {
+	const checkEmailWithTimeout = async () => {
+		const check = await checkEmail(({ email: formData.email }))
+
+		if(check.data.error) {
+			setErrors((prevErr) => ({
+				...prevErr,
+				email: check.data.error
+			}));
+		}
+	}
+
+	const signUpValidation = async (e, form) => {
 		const switchValue = e?.target?.name;
 
 		const isUsernameValid = FIRSTNAME_AND_LASTNAME_REGEXP.test(form.username);
@@ -87,7 +98,6 @@ const SignUp = () => {
 			}
 			case ('email'): {
 				const errorText = isEmailValid ? null : EMAIL_ERROR_TEXT;
-
 				setErrors((prevErr) => ({
 					...prevErr,
 					email: errorText
@@ -128,9 +138,9 @@ const SignUp = () => {
 		}
 	}
 
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-
     const resp = await signUp(formData, history);
     resp?.data?.error ? setSuccess(false) : setSuccess(true)
     setErrors((prevErr) => ({
@@ -144,15 +154,29 @@ const SignUp = () => {
     }
 	}
 
-	const handleChange = (event) => {
+	const handleChange = async (event) => {
 		const { name, value } = event.target;
 		const updatedForm = {
 			...formData,
 			[name]: value
 		}
+
 		setFormData(updatedForm);
-		setTimeout(() => signUpValidation(event, updatedForm), 400);
+		signUpValidation(event, updatedForm);
 	}
+
+	// This effect created to check if email exists
+	// Does not run on initial render
+  useLayoutEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+		if(errors.email === null) {
+			timeOutId = setTimeout(() => checkEmailWithTimeout(), 400);
+			return () => clearTimeout(timeOutId);
+		}
+  }, [formData.email]);
 
 	const switchMode = () => {
     history.push(LOGIN_ROUTE)

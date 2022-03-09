@@ -13,7 +13,6 @@ import notFoundImage from '../../videoNotFound.jpg'
 import './Movie.css';
 
 const MoviePage = ({movie}) => {
-	const iframeContent = movie?.videoUrl ? movie?.videoUrl : notFoundImage;
 	const validVideo = movie?.videoUrl?.match(VIDEO_URL_REGEXP);
 
 	return (
@@ -55,6 +54,7 @@ const MoviePage = ({movie}) => {
 			<div className='movie-trailer'>
 				{validVideo ? (
 					<iframe
+						title="movie-trailer"
 						className='iframe'
 						frameBorder='0'
 						scrolling='no'
@@ -63,7 +63,7 @@ const MoviePage = ({movie}) => {
 					>
 					</iframe>
 				): (
-					<img className='no-content-image' src={notFoundImage} />
+					<img className='no-content-image' src={notFoundImage} alt='notFoundImage'/>
 				)}
 			</div>
 			</div>

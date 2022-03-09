@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import {
@@ -35,7 +35,6 @@ const initialState = {
 const Login = () => {
 	const classes = useStyles();
 	const history = useHistory();
-	const form = useRef(null);
 
 	const [showPassword, setShowPassword] = useState(false);
 	const [formData, setFormData] = useState(initialState);
@@ -165,7 +164,6 @@ const Login = () => {
 					onSubmit={handleSubmit}
 					onKeyPress={submitOnKeyPressed}
 					value={isFormValid}
-					ref={form}
 				>
 					<Grid container spacing={2}>
 						<Input

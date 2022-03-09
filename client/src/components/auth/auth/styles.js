@@ -27,4 +27,11 @@ export default makeStyles((theme) => ({
 	googleButton: {
 		marginBottom: theme.spacing(2),
 	},
+	circularHidden: {
+		display: 'none',
+	},
+	circularVisible: {
+		display: 'flex',
+		flexWrap: 'nowrap'
+	}
 }));
