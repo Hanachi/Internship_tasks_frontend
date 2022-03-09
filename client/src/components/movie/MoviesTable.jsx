@@ -19,6 +19,7 @@ import SpeedDial from "@material-ui/lab/SpeedDial";
 import { fetchMovies } from '../../api';
 import ChatComponent from '../chat/Chat';
 import { Add } from '@material-ui/icons';
+import { LOGIN_ROUTE } from '../../constants/routes';
 
 const useStyles = makeStyles({
 	tableRow: {
@@ -58,7 +59,7 @@ const MoviesTable = () => {
 	const [movies, setMovies] = useState([]);
 	const [moviesCount, setCount] = useState(movies.length);
 	const params = queryString.parse(locationSearch);
-	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+	const [user] = useState(JSON.parse(localStorage.getItem('profile')));
 	const [query, setQuery] = useState({
 		search: params.search || '',
 		page: Number(params.page) || 0,
@@ -100,6 +101,7 @@ const MoviesTable = () => {
 	];
 
 	useEffect(() => {
+		let isMounted = true;
 		if(user) {
 			fetchMovies({ ...query })
 			.then(res => {
@@ -108,13 +110,13 @@ const MoviesTable = () => {
 				updateHistory();
 			})
 		} else {
-			history.push('/auth')
+			history.push(LOGIN_ROUTE)
 		}
+		return () => { isMounted = false };
 	}, [page, rowsPerPage, orderBy, direction, locationSearch])
 
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
-			console.log(query.search)
 			searchData();
 		}, 400)
 		return () => clearTimeout(delayDebounceFn)
@@ -216,9 +218,10 @@ const MoviesTable = () => {
 				/>
 			</div>
 			<ChatComponent />
-			{user?.user?.role == 'admin' ? (
+			{user?.user?.role === 'admin' ? (
 				<Link to='/movies/create' style={{ textDecoration: 'none' }}>
 				<SpeedDial
+					open={false}
 					className={classes.addMovie}
 					ariaLabel="SpeedDial basic example"
 					sx={{ position: 'absolute', bottom: 16, right: 16 }}

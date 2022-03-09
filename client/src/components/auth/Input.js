@@ -29,7 +29,6 @@ const Input = ({
 				error={Boolean(error)}
 				helperText={helperText}
 				onChange={handleChange}
-				onBlur={handleValidation}
 				value={value}
 				variant='outlined'
 				fullWidth

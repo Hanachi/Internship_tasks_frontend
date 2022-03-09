@@ -27,6 +27,7 @@ export const updateMovie = (id, updatedMovie) => API.patch(`/movies/${id}`, upda
 export const deleteMovie = (id) => API.delete(`/movies/${id}`);
 export const getStatistic = () => API.get('/movies/statistic');
 export const getUsers = () => API.get('/users');
+export const checkEmail = (email) => API.post('/users/check/email', email);
 
 export const signIn = async (formData, history) => {
 	try {

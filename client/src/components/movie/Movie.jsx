@@ -32,9 +32,9 @@ const Movie = (props) => {
 	}, [editMode])
 
 	const [movie, setMovie] = useState({});
-	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+	const [user] = useState(JSON.parse(localStorage.getItem('profile')));
 	const history = useHistory();
-	const isAdmin = user?.user?.role == 'admin';
+	const isAdmin = user?.user?.role === 'admin';
 	const icon = !editMode ? <EditIcon /> : <CloseIcon />;
 	const tooltipText = !editMode ? 'Edit movie' : 'Cancel'
 	const { id } = props.match.params;

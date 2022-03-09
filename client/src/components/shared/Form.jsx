@@ -7,8 +7,8 @@ import { Button, TextField } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
 const Form = ({id, movie, setMovie, create, update, remove}) => {
-	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-	const isAdmin = user?.user?.role == 'admin';
+	const [user] = useState(JSON.parse(localStorage.getItem('profile')));
+	const isAdmin = user?.user?.role === 'admin';
 	const [open, setOpen] = React.useState(false);
 
 	const handleClickOpen = () => {

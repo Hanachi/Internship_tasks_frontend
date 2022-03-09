@@ -13,15 +13,15 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Movie from './components/movie/Movie';
 import CreateMovie from './components/movie/CreateMovie';
-import MoviesTable from './components/table/Table';
+import MoviesTable from './components/movie/MoviesTable';
 import Statistic from './components/statistic/Statistic';
-import Auth from './components/auth/auth/Auth';
 import Users from './components/users/Users';
 import Header from './Header';
 import AdComponent from './components/ad/AdComponent';
+import Login from './components/auth/auth/Login';
+import SignUp from './components/auth/auth/SignUp';
 
 ReactDOM.render(
-  <React.StrictMode>
     <BrowserRouter>
 			<Header />
       <div className='app'>
@@ -33,13 +33,13 @@ ReactDOM.render(
 						<Route path='/movies/create' component={CreateMovie} />
 						<Route path='/movies/statistic' component={Statistic} />
 						<Route path='/movies/:id/' component={Movie} />
-						<Route exact path='/auth' component={Auth} />
+						<Route path='/auth/login' component={Login} />
+						<Route path='/auth/signup' component={SignUp} />
 						<Route exact path='/users' component={Users} />
 					</Switch>
 			<AdComponent />
       </div>
-    </BrowserRouter >
-  </React.StrictMode>,
+    </BrowserRouter >,
   document.getElementById('root')
 );
 

@@ -13,13 +13,13 @@ const socket = io('http://localhost:5000');
 const ChatComponent = () => {
 	const [currentMessage, setCurrentMessage] = useState('');
 	const [messageList, setMessageList] = useState([]);
-	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+	const [user] = useState(JSON.parse(localStorage.getItem('profile')));
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [search, setSearch] = useState('');
 
 	const searchMessage = (value) => {
 		[...document.querySelectorAll("p")]
-			.filter(p => p.textContent == value)
+			.filter(p => p.textContent === value)
 			.forEach(p => p.scrollIntoView())
 	}
 
