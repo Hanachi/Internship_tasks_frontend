@@ -16,7 +16,7 @@ import CreateMovie from './components/movie/CreateMovie';
 import MoviesTable from './components/movie/MoviesTable';
 import Statistic from './components/statistic/Statistic';
 import Users from './components/users/Users';
-import Header from './Header';
+import Header from './components/header/Header';
 import AdComponent from './components/ad/AdComponent';
 import Login from './components/auth/auth/Login';
 import SignUp from './components/auth/auth/SignUp';
