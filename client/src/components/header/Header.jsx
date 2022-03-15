@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Profile from '../profile/Profile';
+import Navigation from '../navigation/Navigation';
 import './Header.css';
 
 const Header = () => {
@@ -12,7 +12,7 @@ const Header = () => {
         <Link to='/' style={{ textDecoration: 'none' }}>
           <h1>Movies Library</h1>
         </Link>
-        <Profile />
+        <Navigation />
       </header>
     </div>
   );

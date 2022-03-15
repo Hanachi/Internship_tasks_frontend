@@ -14,11 +14,11 @@ import {
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
-import './Profile.css'
+import './Navigation.css'
 import { KeyboardArrowDown } from '@material-ui/icons';
 import { LOGIN_ROUTE } from '../../constants/routes';
 
-const Profile = () => {
+const Navigation = () => {
 	const history = useHistory();
 	const location = useLocation();
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -160,4 +160,4 @@ const Profile = () => {
 	)
 }
 
-export default Profile;
+export default Navigation;
